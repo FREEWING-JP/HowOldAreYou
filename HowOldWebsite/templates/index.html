@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>How Old Are You | Powered By HaoYu</title>
     <link href="{% static 'frameworks/Bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'frameworks/Dropzone/dropzone.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="{% static 'html5shiv/html5shiv.min.js' %}"></script>
@@ -27,32 +28,31 @@
 
 <div class="row">
     <div class="col-sm-6 col-sm-push-3 text-center">
-        <div id="drop_zone">
-            <p>Drop Your Picture Here</p>
-
-            <p>Or Click To Upload</p>
-
-            <p><span class="glyphicon glyphicon-picture"></span></p>
-        </div>
+        <form id="drop_zone" class="dropzone">
+            {% csrf_token %}
+        </form>
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6 col-sm-push-3">
+    <form class="col-sm-6 col-sm-push-3" action="/fisher" method="POST">
+        {% csrf_token %}
         <div class="input-group input-group-lg">
-            <input type="text" class="form-control" placeholder="Input The URL Of The Image"/>
+            <input type="text" name="ImageURL" class="form-control" placeholder="Input The URL Of The Image"/>
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-picture"></span>
                     </button>
                 </span>
         </div>
-    </div>
+    </form>
 </div>
 <script src="{% static 'frameworks/jQuery/jQuery-2.1.4.min.js' %}"></script>
 <script src="{% static 'frameworks/Bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/dropzone/dropzone.js' %}"></script>
+<script src="{% static 'frameworks/Dropzone/dropzone.js' %}"></script>
 <script>
-    $("#drop_zone").dropzone({url: "fisher"});
+    $("#drop_zone").dropzone({
+        url: "{% url 'fisher' %}"
+    });
 </script>
 </body>
 </html>

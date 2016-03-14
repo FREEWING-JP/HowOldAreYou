@@ -17,7 +17,7 @@ class RecordOriginalImage(models.Model):
     id = models.UUIDField(primary_key=True)
     upload_time = models.DateTimeField()
     user_ip = models.GenericIPAddressField()
-    source_url = models.URLField()
+    source_url = models.URLField(blank=True)
     size_x = models.IntegerField()
     size_y = models.IntegerField()
     size_scale = models.BigIntegerField()
@@ -39,7 +39,7 @@ class RecordSex(models.Model):
     id = models.UUIDField(primary_key=True)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
     sex_predict = models.IntegerField()
-    sex_user = models.IntegerField()
+    sex_user = models.IntegerField(blank=True)
     used_flag = models.IntegerField(choices=RecordUsedFlag)
 
 
@@ -48,7 +48,7 @@ class RecordAge(models.Model):
     id = models.UUIDField(primary_key=True)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
     age_predict = models.IntegerField()
-    age_user = models.IntegerField()
+    age_user = models.IntegerField(blank=True)
     used_flag = models.IntegerField(choices=RecordUsedFlag)
 
 
@@ -57,7 +57,7 @@ class RecordSmile(models.Model):
     id = models.UUIDField(primary_key=True)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
     smile_predict = models.IntegerField()
-    smile_user = models.IntegerField()
+    smile_user = models.IntegerField(blank=True)
     used_flag = models.IntegerField(choices=RecordUsedFlag)
 
 
