@@ -64,3 +64,6 @@ target/
 
 # Editor
 .idea/
+
+# web
+upload/
