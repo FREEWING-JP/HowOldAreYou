@@ -29,6 +29,7 @@ class RecordFace(models.Model):
     id = models.UUIDField(primary_key=True)
     original_image = models.ForeignKey(RecordOriginalImage, on_delete=models.CASCADE)
     detect_time = models.DateTimeField()
+    landmarks = models.TextField()
     location_x = models.IntegerField()
     location_y = models.IntegerField()
     used_flag = models.IntegerField(choices=RecordUsedFlag)
