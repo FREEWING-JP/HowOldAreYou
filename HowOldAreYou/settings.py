@@ -118,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -130,3 +130,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "upload"),
 ]
+
+# Save dirs
+
+SAVE_DIR = {
+    'ORIGINAL_IMAGE': os.path.join(BASE_DIR, "upload", "original_image"),
+    'FACE': os.path.join(BASE_DIR, "upload", "face"),
+    'FACE_GRAY': os.path.join(BASE_DIR, "upload", "face_gray"),
+}
