@@ -22,28 +22,26 @@ def fisher(request):
                                         'tip': 'POST only'
                                         }))
 
-
     # print('Save The Image ...')
-    result_upload, image_upload = image_fetch(request)
+    result_upload, image_upload, cv_image = image_fetch(request)
     if not result_upload:
-        return HttpResponse(json.dumps({'success': False,
-                                        'message': 'Upload Failed',
-                                        'tip': 'JPG only'
-                                        }))
+        return HttpResponse(do_message_maker(success=False, message='Upload Failed', tip='JPG only'))
     result['image'] = image_upload
 
-
-
     # print('Detect Face ...')
-    result_detect, face_detected = face_detect(image_upload)
+    result_detect, face_detected = face_detect(image_upload, cv_image)
     if not result_detect:
-        return HttpResponse(json.dumps({'success': False,
-                                        'message': 'Face Detect Failed',
-                                        'tip': None
-                                        }))
+        return HttpResponse(do_message_maker(success=False, message='Face Detect Failed'))
     result['face'] = face_detected
 
     print('Predict Sex ...')
     print('Predict Age ...')
     print('Predict Smile ...')
-    return HttpResponse("Hello, Fisher")
+    return HttpResponse(do_message_maker(success=True, message='Hello, Fisher'))
+
+
+def do_message_maker(success, message=None, tip=None):
+    return json.dumps({'success': success,
+                       'message': message,
+                       'tip': tip
+                       })
