@@ -1,9 +1,12 @@
 # -*- coding: UTF-8 -*-
 
+import uuid
+
 from django.db import models
 
 
-# ===== 数据库记录项 =====
+
+# ===== Picture Record =====
 
 RecordUsedFlag = ((0, 'Never Used'),
                   (1, 'Available For Train'),
@@ -13,76 +16,78 @@ ModelUsedFlag = ((0, 'Freeing'),
 
 
 class RecordOriginalImage(models.Model):
-    # 原始大图片
-    id = models.UUIDField(primary_key=True)
-    upload_time = models.DateTimeField()
-    user_ip = models.GenericIPAddressField()
+    # The original big image
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    upload_time = models.DateTimeField(auto_now_add=True)
+    user_ip = models.GenericIPAddressField(null=True)
     source_url = models.URLField(blank=True)
-    size_x = models.IntegerField()
-    size_y = models.IntegerField()
-    size_scale = models.BigIntegerField()
-    used_flag = models.IntegerField(choices=RecordUsedFlag)
+    size_x = models.IntegerField(default=0)
+    size_y = models.IntegerField(default=0)
+    size_scale = models.BigIntegerField(default=0)
+    used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
 class RecordFace(models.Model):
-    # 检测出来的人脸
-    id = models.UUIDField(primary_key=True)
+    # The faces detected
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_image = models.ForeignKey(RecordOriginalImage, on_delete=models.CASCADE)
-    detect_time = models.DateTimeField()
-    landmarks = models.TextField()
-    location_x = models.IntegerField()
-    location_y = models.IntegerField()
-    used_flag = models.IntegerField(choices=RecordUsedFlag)
+    detect_time = models.DateTimeField(auto_now_add=True)
+    landmarks = models.TextField(blank=True)
+    location_x1 = models.IntegerField(default=0)
+    location_x2 = models.IntegerField(default=0)
+    location_y1 = models.IntegerField(default=0)
+    location_y2 = models.IntegerField(default=0)
+    used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
 class RecordSex(models.Model):
-    # 检测出来的性别
-    id = models.UUIDField(primary_key=True)
+    # The sexs of the faces detected
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    sex_predict = models.IntegerField()
+    sex_predict = models.IntegerField(default=0)
     sex_user = models.IntegerField(blank=True)
-    used_flag = models.IntegerField(choices=RecordUsedFlag)
+    used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
 class RecordAge(models.Model):
-    # 检测出来的年龄
-    id = models.UUIDField(primary_key=True)
+    # The ages of the faces detected
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    age_predict = models.IntegerField()
+    age_predict = models.IntegerField(default=0)
     age_user = models.IntegerField(blank=True)
-    used_flag = models.IntegerField(choices=RecordUsedFlag)
+    used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
 class RecordSmile(models.Model):
-    # 检测出来的微笑程度
-    id = models.UUIDField(primary_key=True)
+    # The smile degrees of the faces detected
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    smile_predict = models.IntegerField()
+    smile_predict = models.IntegerField(default=0)
     smile_user = models.IntegerField(blank=True)
-    used_flag = models.IntegerField(choices=RecordUsedFlag)
+    used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
-# ===== 模型记录 =====
+# ===== Model Record =====
 
 class ModelSex(models.Model):
-    # 性别模型
-    id = models.UUIDField(primary_key=True)
-    gen_time = models.DateTimeField()
-    accuracy = models.FloatField()
-    used_flag = models.IntegerField(choices=ModelUsedFlag)
+    # The Sex Model
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    gen_time = models.DateTimeField(auto_now_add=True)
+    accuracy = models.FloatField(default=0)
+    used_flag = models.IntegerField(choices=ModelUsedFlag, default=0)
 
 
 class ModelAge(models.Model):
-    # 年龄模型
-    id = models.UUIDField(primary_key=True)
-    gen_time = models.DateTimeField()
-    accuracy = models.FloatField()
-    used_flag = models.IntegerField(choices=ModelUsedFlag)
+    # The Age Model
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    gen_time = models.DateTimeField(auto_now_add=True)
+    accuracy = models.FloatField(default=0)
+    used_flag = models.IntegerField(choices=ModelUsedFlag, default=0)
 
 
 class ModelSmile(models.Model):
-    # 微笑模型
-    id = models.UUIDField(primary_key=True)
-    gen_time = models.DateTimeField()
-    accuracy = models.FloatField()
-    used_flag = models.IntegerField(choices=ModelUsedFlag)
+    # The Smile Model
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    gen_time = models.DateTimeField(auto_now_add=True)
+    accuracy = models.FloatField(default=0)
+    used_flag = models.IntegerField(choices=ModelUsedFlag, default=0)
