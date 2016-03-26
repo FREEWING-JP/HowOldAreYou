@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'haoyu'
 
-import uuid
 import os
+import uuid
 
 import cv2
 
-from .models import RecordOriginalImage
 from HowOldAreYou.settings import SAVE_DIR
+from .models import RecordOriginalImage
 
 
 def image_fetch(request):

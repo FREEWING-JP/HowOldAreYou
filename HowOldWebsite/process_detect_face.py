@@ -2,8 +2,8 @@
 
 __author__ = 'haoyu'
 
-import uuid
 import os
+import uuid
 
 import cv2
 

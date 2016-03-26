@@ -4,8 +4,8 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .process_image_fetch import image_fetch
-from .process_face_detect import face_detect
+from .process_detect_face import face_detect
+from .process_fetch_image import image_fetch
 
 
 def index(request):
