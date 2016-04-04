@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from .process_detect_face import face_detect
+from .process_estimate_age import age_estimate
 from .process_estimate_sex import sex_estimate
 from .process_fetch_image import image_fetch
 
@@ -36,11 +37,14 @@ def fisher(request):
     result['face'] = database_face_detected
 
     # print('Predict Sex ...')
-    result_estimate, database_sex_estimated = sex_estimate(database_face_detected)
-    if not result_estimate:
+    result_sex_estimate, database_sex_estimated = sex_estimate(database_face_detected)
+    if not result_sex_estimate:
         return HttpResponse(do_message_maker(success=False, message='Sex Estimate Failed'))
 
-    print('Predict Age ...')
+    # print('Predict Age ...')
+    result_age_estimate, database_age_estimated = age_estimate(database_face_detected, database_sex_estimated)
+    if not result_age_estimate:
+        return HttpResponse(do_message_maker(success=False, message='Age Estimate Failed'))
 
     print('Predict Smile ...')
 
