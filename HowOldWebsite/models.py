@@ -4,8 +4,6 @@ import uuid
 
 from django.db import models
 
-
-
 # ===== Picture Record =====
 
 RecordUsedFlag = ((0, 'Never Used'),
@@ -45,7 +43,7 @@ class RecordSex(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
     sex_predict = models.IntegerField(default=0)
-    sex_user = models.IntegerField(blank=True)
+    sex_user = models.IntegerField(blank=True, default=0)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 

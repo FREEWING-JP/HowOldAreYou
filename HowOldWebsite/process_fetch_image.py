@@ -50,12 +50,12 @@ def do_fetch_image_by_url(url, request):
         upload_filename = os.path.join(SAVE_DIR['ORIGINAL_IMAGE'], str(pic_id) + '.jpg')
 
         # Todo: Do fetch image here
-        record_original_image, cv_image = do_save_original_image_to_database(pic_id=pic_id,
-                                                                             upload_filename=upload_filename,
-                                                                             request=request,
-                                                                             method='URL')
+        database_original_image, cv_image = do_save_original_image_to_database(pic_id=pic_id,
+                                                                               upload_filename=upload_filename,
+                                                                               request=request,
+                                                                               method='URL')
 
-        return True, record_original_image, cv_image
+        return True, database_original_image, cv_image
     except:
         return False
 
@@ -71,13 +71,13 @@ def do_save_original_image_to_database(pic_id, upload_filename, request, method)
     else:
         url = 'UNKNOW'
 
-    record_original_image = RecordOriginalImage(id=pic_id,
-                                                source_url=url,
-                                                user_ip=request.META['REMOTE_ADDR'],
-                                                size_x=cv_image.shape[1],
-                                                size_y=cv_image.shape[0],
-                                                size_scale=os.path.getsize(upload_filename)
-                                                )
-    record_original_image.save()
+    database_original_image = RecordOriginalImage(id=pic_id,
+                                                  source_url=url,
+                                                  user_ip=request.META['REMOTE_ADDR'],
+                                                  size_x=cv_image.shape[1],
+                                                  size_y=cv_image.shape[0],
+                                                  size_scale=os.path.getsize(upload_filename)
+                                                  )
+    database_original_image.save()
 
-    return record_original_image, cv_image
+    return database_original_image, cv_image
