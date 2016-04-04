@@ -7,7 +7,9 @@ from django.shortcuts import render
 from .process_detect_face import face_detect
 from .process_estimate_age import age_estimate
 from .process_estimate_sex import sex_estimate
+from .process_estimate_smile import smile_estimate
 from .process_fetch_image import image_fetch
+from .process_result_arrange import result_arrange
 
 
 def index(request):
@@ -46,10 +48,18 @@ def fisher(request):
     if not result_age_estimate:
         return HttpResponse(do_message_maker(success=False, message='Age Estimate Failed'))
 
-    print('Predict Smile ...')
+    # print('Predict Smile ...')
+    result_smile_estimate, database_smile_estimated = smile_estimate(database_face_detected)
+    if not result_smile_estimate:
+        return HttpResponse(do_message_maker(success=False, message='Smile Estimate Failed'))
 
-    print('Done!')
-    return HttpResponse(do_message_maker(success=True, message='Hello, Fisher'))
+    # print('Done!')
+    final_result = result_arrange(arr_face=database_face_detected,
+                                  arr_sex=database_sex_estimated,
+                                  arr_age=database_age_estimated,
+                                  arr_smile=database_smile_estimated)
+    # print(final_result)
+    return HttpResponse(do_message_maker(success=True, message=str(final_result)))
 
 
 def do_message_maker(success, message=None, tip=None):
