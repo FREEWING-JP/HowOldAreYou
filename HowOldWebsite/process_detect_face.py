@@ -64,7 +64,13 @@ def do_save_face(original_image, cv_image, cv_faces):
             # The picture of face
             cv_face_image = cv_image[database_record_face.location_y1:database_record_face.location_y2,
                             database_record_face.location_x1:database_record_face.location_x2]
-            cv2.imwrite(face_filename_color, cv_face_image)
+
+            # Change the face size to 256*256
+            cv_face_256 = cv2.resize(cv_face_image, (256, 256), interpolation=cv2.INTER_CUBIC)
+
+            # Save face to disk
+            # cv2.imwrite(face_filename_color, cv_face_image)
+            cv2.imwrite(face_filename_color, cv_face_256)
 
             # Save to database
             database_record_face.save()
