@@ -1,91 +1,130 @@
 # -*- coding: UTF-8 -*-
 
-__author__ = 'haoyu'
-
 import os
 import uuid
 
-import cv2
+import dlib
+import skimage.io
+import skimage.transform
 
 from HowOldAreYou.settings import SAVE_DIR
+from .kernel import get_feature_extractor
 from .models import RecordFace
-from .utils import do_rgb2gray_cv
+from .utils import do_rgb2gray
+
+__author__ = 'haoyu'
 
 
-def face_detect(original_image, cv_image):
+def face_detect(database_original_image, image):
     try:
-        # change rgb image to gray image
-        cv_image_gray = do_rgb2gray_cv(cv_image)
+        # Change rgb image to gray image
+        # cv_image_gray = do_rgb2gray(image)
 
-        # face detection
-        cv_faces = do_detect(cv_image_gray)
+        # Face detection
+        faces = __do_detect(image)
 
-        # show me the detection result
-        # do_show_face(cv_faces,cv_image)
-
-        # save the faces
-        database_face_detected = do_save_face(original_image, cv_image, cv_faces);
-        return True, database_face_detected
-    except:
-        return False
-
-
-def do_detect(cv_image_gray):
-    # load the harr cascade
-    face_cascade = cv2.CascadeClassifier("/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml")
-
-    cv_faces = face_cascade.detectMultiScale(
-        cv_image_gray,
-        scaleFactor=1.15,
-        minNeighbors=5,
-        minSize=(30, 30),
-        flags=cv2.CASCADE_SCALE_IMAGE
-    )
-    # The results are (x,y,height,width)
-    return cv_faces
+        # Save the faces
+        database_face_detected, feature_extracted = \
+            __do_save_faces_and_extract_feature(database_original_image, image, faces);
+        return True, database_face_detected, feature_extracted
+    except Exception as e:
+        # print(e)
+        return False, None, None
 
 
-def do_save_face(original_image, cv_image, cv_faces):
-    database_result = []
-    for (x, y, width, height) in cv_faces:
+def __do_detect(image):
+    # Get the detector
+    detector = dlib.get_frontal_face_detector()
+    # Detect it!
+    faces_detected = detector(image, 1)
+    return faces_detected
+
+
+def __do_save_faces_and_extract_feature(database_original_image, image, faces):
+    database_face_detected, image_face_detected = \
+        __do_save_face(database_original_image, image, faces)
+    feature_extracted = __do_feature_extract(image_face_detected)
+    return database_face_detected, feature_extracted
+
+
+def __do_save_face(database_original_image, image, faces):
+    database_face = []
+    image_face = []
+
+    for ith, face in enumerate(faces):
         try:
+            # Generate the id
             face_id = uuid.uuid4()
+
+            # Make the filename
             face_filename_color = os.path.join(SAVE_DIR['FACE'], str(face_id) + '.jpg')
             # face_filename_gray = os.path.join(SAVE_DIR['FACE_GRAY'], str(face_id) + '.jpg')
 
+            # Get the face range
+            cv_face_image = image[face.top():face.bottom(), face.left():face.right(), :]
+
+            # Resize to 256*256
+            cv_face_image = skimage.transform.resize(cv_face_image, (256, 256))
+            cv_face_image = skimage.img_as_ubyte(cv_face_image)
+
+            # Change image to gray
+            # cv_face_image_gray = skimage.color.rgb2gray(cv_face_image)
+
+            # Save to disk
+            skimage.io.imsave(face_filename_color, cv_face_image)
+
             # A new database record
             database_record_face = RecordFace(id=face_id,
-                                              original_image=original_image,
-                                              location_x1=x,
-                                              location_x2=x + width,
-                                              location_y1=y,
-                                              location_y2=y + height)
-
-            # The picture of face
-            cv_face_image = cv_image[database_record_face.location_y1:database_record_face.location_y2,
-                            database_record_face.location_x1:database_record_face.location_x2]
-
-            # Change the face size to 256*256
-            cv_face_256 = cv2.resize(cv_face_image, (256, 256), interpolation=cv2.INTER_CUBIC)
-
-            # Save face to disk
-            # cv2.imwrite(face_filename_color, cv_face_image)
-            cv2.imwrite(face_filename_color, cv_face_256)
+                                              original_image=database_original_image,
+                                              location_left=face.left(),
+                                              location_right=face.right(),
+                                              location_top=face.top(),
+                                              location_bottom=face.bottom())
 
             # Save to database
             database_record_face.save()
 
             # Append to record
-            database_result.append(database_record_face)
+            image_face.append(cv_face_image)
+            database_face.append(database_record_face)
         except Exception as e:
             # print(e)
             pass
 
-    return database_result
+    return database_face, image_face
 
 
-def do_show_face(cv_faces, cv_image):
-    print("Found {0} faces!" % (len(cv_faces)))
-    for (x, y, w, h) in cv_faces:
-        cv2.rectangle(cv_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    cv2.imshow("Faces found", cv_image)
+def __do_feature_extract(image_faces):
+    # The result array
+    features = {
+        'landmark': [],
+        'rbm': [],
+        'hog': [],
+        'lbp': [],
+        'lbp_hog': [],
+    }
+
+    # Get the extractors
+    extractor_landmark = get_feature_extractor('LANDMARK')
+    extractor_rbm = get_feature_extractor('RBM')
+    extractor_hog = get_feature_extractor('HOG')
+    extractor_lbp = get_feature_extractor('LBP')
+    extractor_lbp_hog = get_feature_extractor('LBP_HOG')
+
+    # For each face, extract the feature
+    for face in image_faces:
+        face_gray = do_rgb2gray(face)
+        f_landmark = extractor_landmark(face_gray)
+        f_rbm = extractor_rbm(face)
+        f_hog = extractor_hog(face_gray)
+        f_lbp = extractor_lbp(face_gray)
+        f_lbp_hog = extractor_lbp_hog(face_gray)
+
+        # Save the features
+        features['landmark'].append(f_landmark)
+        features['rbm'].append(f_rbm)
+        features['hog'].append(f_hog)
+        features['lbp'].append(f_lbp)
+        features['lbp_hog'].append(f_lbp_hog)
+
+    return features

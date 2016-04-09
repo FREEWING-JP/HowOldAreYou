@@ -1,65 +1,47 @@
 # -*- coding: UTF-8 -*-
 
+import numpy as np
+
+from .kernel import get_predictor
+from .models import RecordSex
+
 __author__ = 'haoyu'
 
-import os
 
-from HowOldAreYou.settings import SAVE_DIR
-from .models import RecordSex
-from .utils import do_imread
-from .utils import do_rgb2gray
-
-
-def sex_estimate(database_face_array):
-    database_result = []
-    for face_record in database_face_array:
-        result_estimate, database_sex_estimated = do_sex_estimate_single(face_record)
-        database_result.append(database_sex_estimated)
-    return True, database_result
-
-
-def do_sex_estimate_single(face_record):
-    # Read the face image
-    img = do_imread(os.path.join(SAVE_DIR['FACE'], str(face_record.id) + '.jpg'));
-
-    # Change the image to gray
-    img_gray = do_rgb2gray(img)
-
-    # Generate feature
-    result_feature, data_feature = do_feature_extract(img_gray)
-    # if not result_feature:
-    #     return False
-
-    # Do predict
-    result_predict, data_predict = do_estimate(data_feature)
-    # if not result_predict:
-    #     return False
-    database_record_sex = do_save_sex(face_record, data_predict)
-
-    return True, database_record_sex
-
-
-def do_feature_extract(img):
+def sex_estimate(database_face_array, feature_extracted_array):
     try:
-        pass
+        n_faces = len(database_face_array)
+        result_sex_estimated = __do_estimate(feature_extracted_array, n_faces)
+        database_sex_result = \
+            __do_save_sex_to_database_all(database_face_array,
+                                          result_sex_estimated)
+        return True, database_sex_result
     except Exception as e:
         # print(e)
-        return False
-
-    return True, [1, 2, 3, 4, 5]
+        return False, None
 
 
-def do_estimate(feature):
-    try:
-        pass
-    except Exception as e:
-        # print(e)
-        return False
+def __do_estimate(feature_jar, n_faces):
+    feature_for_sex = []
+    for ith in range(n_faces):
+        feature_hog = feature_jar['hog'][ith]
+        feature_lbp_hog = feature_jar['lbp_hog'][ith]
+        feature_for_sex.append(np.concatenate((feature_hog,
+                                               feature_lbp_hog)))
+    sex_predictor = get_predictor('SEX')
+    result = sex_predictor.predict(feature_for_sex)
+    return result
 
-    return True, 1
+
+def __do_save_sex_to_database_all(database_face, sex):
+    database_sex = []
+    for ith in range(len(database_face)):
+        record = __do_save_sex_to_database(database_face[ith], sex[ith])
+        database_sex.append(record)
+    return database_sex
 
 
-def do_save_sex(face_record, sex_predict):
+def __do_save_sex_to_database(face_record, sex_predict):
     database_record_sex = RecordSex(original_face=face_record,
                                     sex_predict=sex_predict)
     database_record_sex.save()

@@ -31,10 +31,10 @@ class RecordFace(models.Model):
     original_image = models.ForeignKey(RecordOriginalImage, on_delete=models.CASCADE)
     detect_time = models.DateTimeField(auto_now_add=True)
     landmarks = models.TextField(blank=True)
-    location_x1 = models.IntegerField(default=0)
-    location_x2 = models.IntegerField(default=0)
-    location_y1 = models.IntegerField(default=0)
-    location_y2 = models.IntegerField(default=0)
+    location_left = models.IntegerField(default=0)
+    location_right = models.IntegerField(default=0)
+    location_top = models.IntegerField(default=0)
+    location_bottom = models.IntegerField(default=0)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 

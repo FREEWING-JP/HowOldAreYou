@@ -16,10 +16,10 @@ def result_arrange(arr_face,
 
     for itr in range(n_faces):
         t_face = {}
-        t_face['x1'] = arr_face[itr].location_x1
-        t_face['x2'] = arr_face[itr].location_x2
-        t_face['y1'] = arr_face[itr].location_y1
-        t_face['y2'] = arr_face[itr].location_y2
+        t_face['left'] = arr_face[itr].location_left
+        t_face['right'] = arr_face[itr].location_right
+        t_face['top'] = arr_face[itr].location_top
+        t_face['bottom'] = arr_face[itr].location_bottom
         t_face = do_set_value(var=t_face, key='sex', subkey='value', value=arr_sex[itr].sex_predict)
         t_face = do_set_value(var=t_face, key='age', subkey='value', value=arr_age[itr].age_predict)
         t_face = do_set_value(var=t_face, key='smile', subkey='value', value=arr_smile[itr].smile_predict)

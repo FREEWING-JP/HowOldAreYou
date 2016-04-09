@@ -27,31 +27,51 @@ def fisher(request):
                                         }))
 
     # print('Save The Image ...')
-    result_upload, database_image_upload, cv_image_upload = image_fetch(request)
+    result_upload, database_image_upload, image_upload = \
+        image_fetch(request)
     if not result_upload:
-        return HttpResponse(do_message_maker(success=False, message='Upload Failed', tip='JPG only'))
+        return HttpResponse(
+            do_message_maker(success=False,
+                             message='Upload Failed',
+                             tip='JPG only'))
     result['image'] = database_image_upload
 
     # print('Detect Face ...')
-    result_detect, database_face_detected = face_detect(database_image_upload, cv_image_upload)
+    result_detect, database_face_detected, feature_extracted = \
+        face_detect(database_image_upload, image_upload)
     if not result_detect:
-        return HttpResponse(do_message_maker(success=False, message='Face Detect Failed'))
+        return HttpResponse(
+            do_message_maker(success=False,
+                             message='Face Detect Failed'))
     result['face'] = database_face_detected
 
     # print('Predict Sex ...')
-    result_sex_estimate, database_sex_estimated = sex_estimate(database_face_detected)
+    result_sex_estimate, database_sex_estimated = \
+        sex_estimate(database_face_detected,
+                     feature_extracted)
     if not result_sex_estimate:
-        return HttpResponse(do_message_maker(success=False, message='Sex Estimate Failed'))
+        return HttpResponse(
+            do_message_maker(success=False,
+                             message='Sex Estimate Failed'))
 
     # print('Predict Age ...')
-    result_age_estimate, database_age_estimated = age_estimate(database_face_detected, database_sex_estimated)
+    result_age_estimate, database_age_estimated = \
+        age_estimate(database_face_detected,
+                     database_sex_estimated,
+                     feature_extracted)
     if not result_age_estimate:
-        return HttpResponse(do_message_maker(success=False, message='Age Estimate Failed'))
+        return HttpResponse(
+            do_message_maker(success=False,
+                             message='Age Estimate Failed'))
 
     # print('Predict Smile ...')
-    result_smile_estimate, database_smile_estimated = smile_estimate(database_face_detected)
+    result_smile_estimate, database_smile_estimated = \
+        smile_estimate(database_face_detected,
+                       feature_extracted)
     if not result_smile_estimate:
-        return HttpResponse(do_message_maker(success=False, message='Smile Estimate Failed'))
+        return HttpResponse(
+            do_message_maker(success=False,
+                             message='Smile Estimate Failed'))
 
     # print('Done!')
     final_result = result_arrange(arr_face=database_face_detected,
@@ -59,7 +79,9 @@ def fisher(request):
                                   arr_age=database_age_estimated,
                                   arr_smile=database_smile_estimated)
     # print(final_result)
-    return HttpResponse(do_message_maker(success=True, message=str(final_result)))
+    return HttpResponse(
+        do_message_maker(success=True,
+                         message=str(final_result)))
 
 
 def do_message_maker(success, message=None, tip=None):

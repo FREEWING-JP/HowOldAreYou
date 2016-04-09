@@ -1,75 +1,125 @@
 # -*- coding: UTF-8 -*-
 
-from __future__ import print_function
-
 import os
 
+import dlib
+import numpy as np
+import skimage.feature
 from sklearn.externals import joblib
 
 from HowOldAreYou.settings import SAVE_DIR
 
+# The paths
+__paths = {
+    'MODEL_AGE': os.path.join(SAVE_DIR['MODEL'], 'model_age'),
+    'MODEL_SEX': os.path.join(SAVE_DIR['MODEL'], 'model_sex'),
+    'MODEL_SMILE': os.path.join(SAVE_DIR['MODEL'], 'model_smile'),
+    'FEATURE_LANDMARK': os.path.join(SAVE_DIR['MODEL'], 'feature_landmark'),
+    'FEATURE_RBM': os.path.join(SAVE_DIR['MODEL'], 'feature_rbm'),
+}
 
-class Kernal:
-    """
-    The models, including the models for feature extracting and the
-    models for predicting.
-    """
-    # To search the face
-    __model_detector_face = None
-    # To extract face landmark
-    __model_feature_landmark = None
-    # To extract aam feature
-    __model_feature_aam = None
-    # To extract deep feature from BernoulliRBM
-    __model_feature_bernoulli_rbm = None
-    # To extract deep feature from ConvNets
-    __model_feature_conv_nets = None
+# The rectangle in dlib
+box = dlib.rectangle(left=0, top=0, right=255, bottom=255)
 
-    # Sex predictor
-    __model_predictor_sex = None
-    # Age predictor
-    __model_predictor_age = None
-    # Smile predictor
-    __model_predictor_smile = None
+# The features
 
-    __storage = {
-        #
-        'model_detector_face': __model_detector_face,
-        #
-        'model_feature_landmark': __model_feature_landmark,
-        'model_feature_aam': __model_feature_aam,
-        'model_feature_bernoulli_rbm': __model_feature_bernoulli_rbm,
-        'model_feature_conv_nets': __model_feature_conv_nets,
-        #
-        'model_predictor_sex': __model_predictor_sex,
-        'model_predictor_age': __model_predictor_age,
-        'model_predictor_smile': __model_predictor_smile,
-    }
+__doer = {
+    'rbm': None
+}
 
-    def load_data(self, model, name):
-        path = os.path.join(SAVE_DIR['MODEL'], name + '.pkl')
-        try:
-            Kernal.__storage[model] = joblib.load(path)
-            print('Load {} done!'.format(model))
-        except Exception as e:
-            # print(e)
-            print('Load {} error!'.format(model))
-            pass
 
-    def save_data(self, model, name):
-        path = os.path.join(SAVE_DIR['MODEL'], name + '.pkl')
-        try:
-            joblib.dump(Kernal.__storage[model], path)
-            print('Save {} done!'.format(model))
-        except Exception as e:
-            # print(e)
-            print('Save {} error!'.format(model))
-            pass
+def __do_lbp_hog(image_gray, P=8, R=180,
+                 pixels_per_cell=(16, 16), cells_per_block=(1, 1)):
+    feature_lbp = skimage.feature.local_binary_pattern(image_gray, P, R)
+    feature_lbp_hog = skimage.feature.hog(feature_lbp,
+                                          pixels_per_cell=pixels_per_cell,
+                                          cells_per_block=cells_per_block)
+    return feature_lbp_hog.ravel()
 
-    def get_instance(self, model):
-        instance = None
-        try:
-            instance = Kernal.__storage[model]
-        except Exception as e:
-            # print(e)
-            return instance
+
+def __do_lbp(image_gray, P=8, R=180):
+    feature = skimage.feature.local_binary_pattern(image_gray, P=P, R=R)
+    return feature.ravel()
+
+
+def __do_landmark(image_gray):
+    feature = []
+    extractor = dlib.shape_predictor(
+        os.path.join(__paths['FEATURE_LANDMARK'],
+                     'face_landmark.dat'))
+    landmarks = extractor(image_gray, box)
+    for point in landmarks.parts():
+        feature.append(point.x)
+        feature.append(point.y)
+
+    return np.array(feature).ravel()
+
+
+def __do_hog(image_gray, pixels_per_cell=(16, 16), cells_per_block=(1, 1)):
+    feature = skimage.feature.hog(image_gray,
+                                  pixels_per_cell=pixels_per_cell,
+                                  cells_per_block=cells_per_block)
+    return feature.ravel()
+
+
+def __do_rbm(image):
+    if __doer['rbm'] is None:
+        __doer['rbm'] = joblib.load(
+            os.path.join(SAVE_DIR['MODEL'], 'feature_rbm', 'rbm.pkl'))
+    doer = __doer['rbm']
+    feature = doer.transform(image.reshape(1, -1))
+    return feature[0].ravel()
+
+
+__map_feature_extrator = {
+    'LANDMARK': __do_landmark,
+    'RBM': __do_rbm,
+    'HOG': __do_hog,
+    'LBP': __do_lbp,
+    'LBP_HOG': __do_lbp_hog,
+}
+
+
+def get_feature_extractor(name):
+    try:
+        return __map_feature_extrator[name]
+    except Exception as e:
+        # print(e)
+        return None
+
+
+# The predictors
+
+__map_predictor = {
+    'SEX': None,
+    'AGE': None,
+    'SMILE': None,
+}
+
+
+def get_predictor(name):
+    try:
+        if __map_predictor[name] is None:
+            load_predictor(name)
+        return __map_predictor[name]
+    except Exception as e:
+        # print(e)
+        return None
+
+
+def load_predictor(name, id=None):
+    '''
+    If the id is not specified, we will find the model which is bing used or the
+    newest, and read the id.
+    Then we will load /model/model_NAME/ID/NAME.pkl ,
+    '''
+    try:
+        if id is None:
+            # Todo: Find the newest model and read the id
+            id = 'foo'
+            path = os.path.join(__paths['MODEL_' + name.upper()], name.lower() + '.pkl')
+        else:
+            path = os.path.join(__paths['MODEL_' + name.upper()], str(id), name.lower() + '.pkl')
+        __map_predictor[name] = joblib.load(path)
+    except:
+        pass

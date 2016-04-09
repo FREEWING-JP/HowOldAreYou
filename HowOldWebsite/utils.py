@@ -10,9 +10,9 @@ import skimage.io
 
 def do_rgb2gray(image):
     if 3 == image.ndim:
-        return skimage.color.rgb2gray(rgb=image)
+        return skimage.img_as_ubyte(skimage.color.rgb2gray(rgb=image))
     else:
-        return image
+        return skimage.img_as_ubyte(image)
 
 
 def do_rgb2gray_cv(cv_image):
@@ -23,7 +23,7 @@ def do_rgb2gray_cv(cv_image):
 
 
 def do_imread(path):
-    return skimage.io.imread(fname=path)
+    return skimage.img_as_ubyte(skimage.io.imread(fname=path))
 
 
 def do_imread_cv(path):
