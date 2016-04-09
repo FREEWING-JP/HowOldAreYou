@@ -3,6 +3,7 @@
 # import cv2
 import os
 import uuid
+from urllib import request as urllib_request
 
 import skimage.io
 
@@ -59,7 +60,10 @@ def do_fetch_image_by_uploading(file, request, pic_id, upload_filename):
 def do_fetch_image_by_url(url, request, pic_id, upload_filename):
     # print('Save image by url')
     try:
-        # Todo: Do fetch image here
+        webfile = urllib_request.urlopen(url)
+        file_content = webfile.read()
+        with open(upload_filename, 'wb+') as destination:
+            destination.write(file_content)
 
         cv_image = skimage.io.imread(upload_filename)
         size_scale = os.path.getsize(upload_filename)
