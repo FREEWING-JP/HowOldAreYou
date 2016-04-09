@@ -116,10 +116,9 @@ def load_predictor(name, id=None):
     try:
         if id is None:
             # Todo: Find the newest model and read the id
-            id = 'foo'
-            path = os.path.join(__paths['MODEL_' + name.upper()], name.lower() + '.pkl')
-        else:
-            path = os.path.join(__paths['MODEL_' + name.upper()], str(id), name.lower() + '.pkl')
+            id = 'default'
+
+        path = os.path.join(__paths['MODEL_' + name.upper()], str(id), name.lower() + '.pkl')
         __map_predictor[name] = joblib.load(path)
     except:
         pass

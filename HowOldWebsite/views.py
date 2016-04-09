@@ -81,7 +81,7 @@ def fisher(request):
     # print(final_result)
     return HttpResponse(
         do_message_maker(success=True,
-                         message=str(final_result)))
+                         message=final_result))
 
 
 def do_message_maker(success, message=None, tip=None):
