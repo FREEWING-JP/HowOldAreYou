@@ -3,13 +3,15 @@
 __author__ = 'haoyu'
 
 
-def result_arrange(arr_face,
+def result_arrange(raw_image,
+                   arr_face,
                    arr_sex,
                    arr_age,
                    arr_smile):
     result = {}
 
     n_faces = len(arr_face)
+    result['pic_id'] = str(raw_image.id)
     result['n_faces'] = n_faces
 
     result['faces'] = []

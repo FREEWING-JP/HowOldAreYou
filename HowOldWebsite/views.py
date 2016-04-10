@@ -74,7 +74,8 @@ def fisher(request):
                              message='Smile Estimate Failed'))
 
     # print('Done!')
-    final_result = result_arrange(arr_face=database_face_detected,
+    final_result = result_arrange(raw_image=database_image_upload,
+                                  arr_face=database_face_detected,
                                   arr_sex=database_sex_estimated,
                                   arr_age=database_age_estimated,
                                   arr_smile=database_smile_estimated)
