@@ -13,6 +13,10 @@
       <script src="{% static 'html5shiv/html5shiv.min.js' %}"></script>
       <script src="{% static 'respond/respond.min.js' %}"></script>
     <![endif]-->
+    <script type="text/javascript">
+        var $CONFIG = {};
+        $CONFIG['fisher'] = '{% url 'fisher' %}';
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -26,33 +30,111 @@
     </div>
 </nav>
 
-<div class="row">
-    <div class="col-sm-6 col-sm-push-3 text-center">
-        <form id="drop_zone" class="dropzone">
-            {% csrf_token %}
-        </form>
+<div id="how-old-init-zone" class="container-fluid how-old-page">
+    <div class="row">
+        <div class="col-sm-6 col-sm-push-3 text-center">
+            <form id="how_old_drop_zone" class="dropzone">
+                {% csrf_token %}
+            </form>
+        </div>
     </div>
-</div>
-<div class="row">
-    <form class="col-sm-6 col-sm-push-3" action="/fisher" method="POST">
-        {% csrf_token %}
-        <div class="input-group input-group-lg">
-            <input type="text" name="ImageURL" class="form-control" placeholder="Input The URL Of The Image"/>
+    <div class="row">
+        <div class="col-sm-6 col-sm-push-3 text-center">
+            <h3>Or</h3>
+        </div>
+    </div>
+    <div class="row">
+        <form id="how_old_url" class="col-sm-6 col-sm-push-3" method="POST">
+            {% csrf_token %}
+            <div class="input-group input-group-lg">
+                <input type="text" name="ImageURL" class="form-control" placeholder="Input The URL Of Your Photo"/>
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit">
                         <span class="glyphicon glyphicon-picture"></span>
                     </button>
                 </span>
-        </div>
-    </form>
+            </div>
+        </form>
+    </div>
 </div>
+
+<div id="how-old-preview-zone" class="container-fluid how-old-page">
+    <div class="row">
+        <div class="col-sm-6 col-sm-push-3 text-center">
+            <div class="row">
+                <div class="col-sm-8">
+
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-unstyled">
+                        <li class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="..." alt="...">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Media heading</h4>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="..." alt="...">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Media heading</h4>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="..." alt="...">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Media heading</h4>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-success btn-lg btn-block">Try again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="how-old-error-zone" class="container-fluid how-old-page">
+    <div class="row">
+        <div class="col-sm-6 col-sm-push-3">
+            <div class="page-header">
+                <h1>
+                    Oooooops~
+                    <small>Error occurred!</small>
+                </h1>
+            </div>
+
+            <h3>What happened?</h3>
+            <blockquote>
+                <p id="error-message">Error info here</p>
+            </blockquote>
+            <h3>Any tips?</h3>
+            <blockquote>
+                <p id="error-tip">Tip here</p>
+            </blockquote>
+            <button type="button" class="btn btn-danger btn-lg btn-block">Try again</button>
+        </div>
+    </div>
+</div>
+
 <script src="{% static 'frameworks/jQuery/jQuery-2.1.4.min.js' %}"></script>
 <script src="{% static 'frameworks/Bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'frameworks/Dropzone/dropzone.js' %}"></script>
-<script>
-    $("#drop_zone").dropzone({
-        url: "{% url 'fisher' %}"
-    });
-</script>
+<script src="{% static 'js/howoldareyou.js' %}"></script>
 </body>
 </html>
