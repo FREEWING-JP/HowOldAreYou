@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -125,12 +126,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "upload"),
 ]
 
+# Media files
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
+
 # Save dirs
 
 SAVE_DIR = {
-    'ORIGINAL_IMAGE': os.path.join(BASE_DIR, "upload", "original_image"),
-    'UPLOAD': os.path.join(BASE_DIR, "upload"),
-    'FACE': os.path.join(BASE_DIR, "upload", "face"),
-    'FACE_GRAY': os.path.join(BASE_DIR, "upload", "face_gray"),
+    'ORIGINAL_IMAGE': os.path.join(MEDIA_ROOT, "original_image"),
+    'UPLOAD': MEDIA_ROOT,
+    'FACE': os.path.join(MEDIA_ROOT, "face"),
+    'FACE_GRAY': os.path.join(MEDIA_ROOT, "face_gray"),
     'MODEL': os.path.join(BASE_DIR, "model"),
 }

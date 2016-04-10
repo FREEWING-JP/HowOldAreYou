@@ -13,6 +13,8 @@ def result_arrange(raw_image,
     n_faces = len(arr_face)
     result['pic_id'] = str(raw_image.id)
     result['n_faces'] = n_faces
+    result['width'] = raw_image.size_x
+    result['height'] = raw_image.size_y
 
     result['faces'] = []
 

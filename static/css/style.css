@@ -11,6 +11,23 @@ html {
     */
 }
 
+.hidden {
+    display: none;
+}
+
 .how-old-page {
     padding-top: 100px;
+}
+
+.how-old-face-rectangle {
+    position: absolute;
+    border: 2px solid red;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+}
+
+.how-old-face-rectangle:hover {
+    border: 2px solid black;
+    border-radius: 25px;
+    box-shadow: 0 0 10px black;
 }
