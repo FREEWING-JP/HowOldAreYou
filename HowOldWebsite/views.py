@@ -1,15 +1,18 @@
 # -*- coding: UTF-8 -*-
 import json
+import uuid
 
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from .models import RecordFace
 from .process_detect_face import face_detect
 from .process_estimate_age import age_estimate
 from .process_estimate_sex import sex_estimate
 from .process_estimate_smile import smile_estimate
 from .process_fetch_image import image_fetch
 from .process_result_arrange import result_arrange
+from .utils import do_message_maker
 
 
 def index(request):
@@ -85,8 +88,25 @@ def fisher(request):
                          message=final_result))
 
 
-def do_message_maker(success, message=None, tip=None):
-    return json.dumps({'success': success,
-                       'message': message,
-                       'tip': tip
-                       })
+def feedback(request):
+    success = True
+    try:
+        # Get the parameters
+        face_id = uuid.UUID(request.POST.get('face_id', ''))
+        sex_user = int(request.POST.get('sex', ''))
+        age_user = float(request.POST.get('age', ''))
+        smile_user = float(request.POST.get('smile', ''))
+
+        # Update into the database
+        database_face = RecordFace.objects.get(id=face_id)
+        database_face.recordsex_set.update(sex_user=sex_user)
+        database_face.recordage_set.update(age_user=age_user)
+        database_face.recordsmile_set.update(smile_user=smile_user)
+
+        # database_face.save()
+    except Exception as e:
+        # print(e)
+        success = False
+
+    return HttpResponse(
+        do_message_maker(success=success))

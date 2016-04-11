@@ -5,10 +5,12 @@ from django.views.generic.base import RedirectView
 from . import views
 
 urlpatterns = [
-    # favicon.ico
+    # The favicon.ico file
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
-    # the index page
+    # The index page
     url(r'^$', views.index, name='index'),
-    # the main processor
+    # The main processor
     url(r'^fisher$', views.fisher, name='fisher'),
+    # The feedback page
+    url(r'^feedback$', views.feedback, name='feedback'),
 ]

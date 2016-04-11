@@ -20,6 +20,7 @@ def result_arrange(raw_image,
 
     for itr in range(n_faces):
         t_face = {}
+        t_face['id'] = str(arr_face[itr].id)
         t_face['left'] = arr_face[itr].location_left
         t_face['right'] = arr_face[itr].location_right
         t_face['top'] = arr_face[itr].location_top

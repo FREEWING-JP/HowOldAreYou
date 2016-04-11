@@ -89,6 +89,10 @@ $(function () {
             faceElement.attr('id', 'how-old-face-rectangle-' + ith);
             faceElement.attr('data-toggle', 'tooltip');
             faceElement.attr('data-placement', 'top');
+            faceElement.attr('data-face-id', face.id);
+            faceElement.attr('data-face-sex', face.sex.value);
+            faceElement.attr('data-face-age', face.age.value);
+            faceElement.attr('data-face-smile', face.smile.value);
             faceElement.attr('title', toolTip.html());
             faceElement.css('position', 'absolute');
             faceElement.css('left', (left) + '%');
@@ -99,9 +103,21 @@ $(function () {
             // Append to the container
             container.prepend(faceElement);
         });
+
         $('[data-toggle="tooltip"]').tooltip({
             html: true
-        })
+        });
+
+        $('.how-old-face-rectangle').click(function () {
+            $('#how-old-feedback-data-face-id').val($(this).data('face-id'));
+            $('#how-old-feedback-data-face-sex').val($(this).data('face-sex'));
+            $('#how-old-feedback-data-face-age').val(Math.round($(this).data('face-age')));
+            $('#how-old-feedback-data-face-smile').val(Math.round($(this).data('face-smile')));
+            $('#how-old-feedback').modal();
+            $('.how-old-feedback-element').hide();
+            $('#how-old-feedback-main').show();
+            $('#how-old-feedback-control').show();
+        });
     }
 
     // Judge if it's really success
@@ -126,7 +142,7 @@ $(function () {
             doWaiting();
         },
         error: function (foo, response) {
-            doProcessError(response, "Please try again.");
+            doProcessError(response, "Try again?");
         },
         success: function (foo, response) {
             var data = JSON.parse(response);
@@ -149,8 +165,40 @@ $(function () {
                 doProcessSuccess(data);
             },
             error: function (xhr, info, e) {
-                console.log(info);
+                doProcessError(info, 'Try again?');
             }
         });
-    })
+    });
+
+    function doFeedbackSuccess() {
+        $('.how-old-feedback-element').hide();
+        $('#how-old-feedback-success').show();
+    }
+
+    function doFeedbackError() {
+        $('.how-old-feedback-element').hide();
+        $('#how-old-feedback-error').show();
+    }
+
+    // Feedback submit
+    $("#how-old-feedback-submit").click(function () {
+        var params = $("#how-old-feedback-form").serialize();
+        $.ajax({
+            type: 'POST',
+            url: $CONFIG['feedback'],
+            data: params,
+            success: function (result, status, xhr) {
+                var data = JSON.parse(result);
+                if (data.success == true) {
+                    doFeedbackSuccess()
+                } else {
+                    doFeedbackError()
+                }
+
+            },
+            error: function (xhr, info, e) {
+                doFeedbackSuccess()
+            }
+        });
+    });
 });
