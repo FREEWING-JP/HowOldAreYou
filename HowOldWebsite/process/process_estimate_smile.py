@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-import numpy as np
-
 from HowOldWebsite.kernel import get_predictor
+from HowOldWebsite.kernel import named_feature_combine
 from HowOldWebsite.models import RecordSmile
 
 __author__ = 'haoyu'
@@ -24,10 +23,8 @@ def smile_estimate(database_face_array, feature_extracted_array):
 def __do_estimate(feature_jar, n_faces):
     feature_for_smile = []
     for ith in range(n_faces):
-        feature_lbp_hog = feature_jar['lbp_hog'][ith]
-        feature_landmark = feature_jar['landmark'][ith]
-        feature_for_smile.append(np.concatenate((feature_lbp_hog,
-                                                 feature_landmark)))
+        feature_for_smile.append(
+            named_feature_combine(feature_jar, combine_name='smile', ith=ith))
     smile_predictor = get_predictor('SMILE')
     result = smile_predictor.predict(feature_for_smile)
     return result

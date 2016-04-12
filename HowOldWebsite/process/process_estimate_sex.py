@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-import numpy as np
-
 from HowOldWebsite.kernel import get_predictor
+from HowOldWebsite.kernel import named_feature_combine
 from HowOldWebsite.models import RecordSex
 
 __author__ = 'haoyu'
@@ -24,10 +23,8 @@ def sex_estimate(database_face_array, feature_extracted_array):
 def __do_estimate(feature_jar, n_faces):
     feature_for_sex = []
     for ith in range(n_faces):
-        feature_hog = feature_jar['hog'][ith]
-        feature_lbp_hog = feature_jar['lbp_hog'][ith]
-        feature_for_sex.append(np.concatenate((feature_hog,
-                                               feature_lbp_hog)))
+        feature_for_sex.append(
+            named_feature_combine(feature_jar, combine_name='sex', ith=ith))
     sex_predictor = get_predictor('SEX')
     result = sex_predictor.predict(feature_for_sex)
     return result

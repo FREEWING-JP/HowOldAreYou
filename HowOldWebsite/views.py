@@ -120,4 +120,5 @@ def feedback(request):
 
 
 def train(request):
-    pass
+    return HttpResponse(
+        do_message_maker(success=True))

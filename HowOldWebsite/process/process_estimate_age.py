@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-import numpy as np
-
 from HowOldWebsite.kernel import get_predictor
+from HowOldWebsite.kernel import named_feature_combine
 from HowOldWebsite.models import RecordAge
 
 __author__ = 'haoyu'
@@ -24,10 +23,8 @@ def age_estimate(database_face_array, database_age_array, feature_extracted_arra
 def __do_estimate(feature_jar, n_faces):
     feature_for_age = []
     for ith in range(n_faces):
-        feature_lbp_hog = feature_jar['lbp_hog'][ith]
-        feature_rbm = feature_jar['rbm'][ith]
-        feature_for_age.append(np.concatenate((feature_lbp_hog,
-                                               feature_rbm)))
+        feature_for_age.append(
+            named_feature_combine(feature_jar, combine_name='age', ith=ith))
     sex_predictor = get_predictor('AGE')
     result = sex_predictor.predict(feature_for_age)
     return result

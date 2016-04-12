@@ -71,7 +71,7 @@ def __do_rbm(image):
     return feature[0].ravel()
 
 
-__map_feature_extrator = {
+__map_feature_extractor = {
     'LANDMARK': __do_landmark,
     'RBM': __do_rbm,
     'HOG': __do_hog,
@@ -82,10 +82,31 @@ __map_feature_extrator = {
 
 def get_feature_extractor(name):
     try:
-        return __map_feature_extrator[name]
+        return __map_feature_extractor[name]
     except Exception as e:
         # print(e)
         return None
+
+
+def feature_combine(features, name_feature1, name_feature2, ith):
+    try:
+        feature1 = features[name_feature1][ith]
+        feature2 = features[name_feature2][ith]
+        return np.concatenate((feature1, feature2))
+    except Exception as e:
+        # print(e)
+        pass
+    return None
+
+
+def named_feature_combine(features, combine_name, ith):
+    if 'sex' == combine_name:
+        return feature_combine(features, 'hog', 'lbp_hog', ith)
+    elif 'age' == combine_name:
+        return feature_combine(features, 'lbp_hog', 'rbm', ith)
+    elif 'smile' == combine_name:
+        return feature_combine(features, 'lbp_hog', 'landmark', ith)
+    return None
 
 
 # The predictors
@@ -107,18 +128,18 @@ def get_predictor(name):
         return None
 
 
-def load_predictor(name, id=None):
+def load_predictor(model_name, model_id=None):
     '''
     If the id is not specified, we will find the model which is bing used or the
     newest, and read the id.
     Then we will load /model/model_NAME/ID/NAME.pkl ,
     '''
     try:
-        if id is None:
+        if model_id is None:
             # Todo: Find the newest model and read the id
-            id = 'default'
+            model_id = 'default'
 
-        path = os.path.join(__paths['MODEL_' + name.upper()], str(id), name.lower() + '.pkl')
-        __map_predictor[name] = joblib.load(path)
+        path = os.path.join(__paths['MODEL_' + model_name.upper()], str(model_id), model_name.lower() + '.pkl')
+        __map_predictor[model_name] = joblib.load(path)
     except:
         pass
