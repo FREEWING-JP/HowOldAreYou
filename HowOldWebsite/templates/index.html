@@ -69,6 +69,21 @@
         <p>It will be OK in a few seconds...</p>
 
         <p>:)</p>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 25%">
+                <span class="sr-only">Uploading picture...</span>
+            </div>
+            <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 25%">
+                <span class="sr-only">Processing...</span>
+            </div>
+            <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 25%">
+                <span class="sr-only">Processing...</span>
+            </div>
+            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 25%">
+                <span class="sr-only">Processing...</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -77,8 +92,10 @@
         <div class="col-sm-6 col-sm-push-3 text-center">
             <div class="row">
                 <div id="how-old-picture-area" class="col-sm-12">
-                    <img id="how-old_picture-area-picture" class="img-responsive center-block"
-                         src="{% static 'img/default.jpg' %}" alt="How Old Are You">
+                    <div id="how-old-picture-wrapper">
+                        <img id="how-old_picture-area-picture" class="img-responsive center-block"
+                             src="{% static 'img/default.jpg' %}" alt="How Old Are You">
+                    </div>
                 </div>
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-success btn-lg btn-block retry-button">Try again</button>

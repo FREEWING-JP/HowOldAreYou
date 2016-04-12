@@ -52,7 +52,7 @@ $(function () {
         var n_faces = data.n_faces;
         var height = data.height;
         var width = data.width;
-        var container = $('#how-old-picture-area');
+        var container = $('#how-old-picture-wrapper');
         var imgPhoto = $('#how-old_picture-area-picture');
         var scale = imgPhoto.width / width;
         $('#how-old_picture-area-picture').attr('src', $CONFIG['photo'] + data.pic_id + '.jpg');
