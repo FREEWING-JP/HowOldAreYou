@@ -89,6 +89,13 @@ def fisher(request):
 
 
 def feedback(request):
+    # check if in POST method
+    if not request.method == "POST":
+        return HttpResponse(json.dumps({'success': False,
+                                        'message': 'Must in POST method',
+                                        'tip': 'POST only'
+                                        }))
+
     success = True
     try:
         # Get the parameters
