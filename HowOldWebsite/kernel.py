@@ -119,6 +119,7 @@ __map_predictor = {
 
 
 def get_predictor(name):
+    name = name.upper()
     try:
         if __map_predictor[name] is None:
             load_predictor(name)
