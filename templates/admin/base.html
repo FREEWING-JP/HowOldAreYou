@@ -88,16 +88,6 @@
                     </div>
                     <div class="pull-left info">
                         <p>{% firstof user.get_short_name user.get_username %}</p>
-                        {% if user.has_usable_password %}
-                            <a href="{% url 'admin:password_change' %}">
-                                <i class="fa fa-circle text-success"></i>
-                                {% trans 'Change password' %}
-                            </a>
-                        {% endif %}
-                        <a href="{% url 'admin:logout' %}">
-                            <i class="fa fa-circle text-success"></i>
-                            {% trans 'Log out' %}
-                        </a>
                     </div>
                 </div>
 
@@ -113,36 +103,58 @@
 
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-pie-chart"></i>
+                            <i class="fa fa-sticky-note"></i>
                             <span>Record</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Record 1</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Record 2</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Sex</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Age</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Smile</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-pie-chart"></i>
+                            <i class="fa fa-cubes"></i>
                             <span>Model</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Model 1</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Model 2</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Sex</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Age</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Smile</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-files-o"></i>
+                            <i class="fa fa-terminal"></i>
                             <span>Training Log</span>
                         </a>
                     </li>
-                    <li class="header">LABELS</li>
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+                    <li class="header">PERSONAL</li>
+
+                    {% if user.has_usable_password %}
+                        <li>
+                            <a href="{% url 'admin:password_change' %}">
+                                <i class="fa fa-circle-o text-red"></i>
+                                <span>{% trans 'Change password' %}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'admin:logout' %}">
+                            <i class="fa fa-circle-o text-yellow"></i>
+                            <span>{% trans 'Log out' %}</span>
+                        </a>
+                    </li>
+                    <!--
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-circle-o text-aqua"></i>
+                            <span>Information</span>
+                        </a>
+                    </li>
+                    -->
                 </ul>
                 </section>
             {% else %}
