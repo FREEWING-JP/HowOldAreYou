@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from .kernel import get_predictor
-from .models import RecordAge
+from HowOldWebsite.kernel import get_predictor
+from HowOldWebsite.models import RecordAge
 
 __author__ = 'haoyu'
 

@@ -8,9 +8,9 @@ import skimage.io
 import skimage.transform
 
 from HowOldAreYou.settings import SAVE_DIR
-from .kernel import get_feature_extractor
-from .models import RecordFace
-from .utils import do_rgb2gray
+from HowOldWebsite.kernel import get_feature_extractor
+from HowOldWebsite.models import RecordFace
+from HowOldWebsite.utils import do_rgb2gray
 
 __author__ = 'haoyu'
 

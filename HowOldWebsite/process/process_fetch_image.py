@@ -9,7 +9,7 @@ import skimage.exposure
 import skimage.io
 
 from HowOldAreYou.settings import SAVE_DIR
-from .models import RecordOriginalImage
+from HowOldWebsite.models import RecordOriginalImage
 
 __author__ = 'haoyu'
 

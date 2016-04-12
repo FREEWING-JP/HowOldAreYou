@@ -5,13 +5,13 @@ import uuid
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from HowOldWebsite.process.process_estimate_smile import smile_estimate
 from .models import RecordFace
-from .process_detect_face import face_detect
-from .process_estimate_age import age_estimate
-from .process_estimate_sex import sex_estimate
-from .process_estimate_smile import smile_estimate
-from .process_fetch_image import image_fetch
-from .process_result_arrange import result_arrange
+from .process.process_detect_face import face_detect
+from .process.process_estimate_age import age_estimate
+from .process.process_estimate_sex import sex_estimate
+from .process.process_fetch_image import image_fetch
+from .process.process_result_arrange import result_arrange
 from .utils import do_message_maker
 
 
@@ -117,3 +117,7 @@ def feedback(request):
 
     return HttpResponse(
         do_message_maker(success=success))
+
+
+def train(request):
+    pass
