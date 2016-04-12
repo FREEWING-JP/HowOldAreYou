@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+
 import json
 import uuid
 
@@ -6,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from HowOldWebsite.process.process_estimate_smile import smile_estimate
+from HowOldWebsite.train.trainer import Trainer
 from .models import RecordFace
 from .process.process_detect_face import face_detect
 from .process.process_estimate_age import age_estimate
@@ -13,6 +15,8 @@ from .process.process_estimate_sex import sex_estimate
 from .process.process_fetch_image import image_fetch
 from .process.process_result_arrange import result_arrange
 from .utils import do_message_maker
+
+__author__ = 'haoyu'
 
 
 def index(request):
@@ -109,8 +113,8 @@ def feedback(request):
         database_face.recordsex_set.update(sex_user=sex_user)
         database_face.recordage_set.update(age_user=age_user)
         database_face.recordsmile_set.update(smile_user=smile_user)
-
-        # database_face.save()
+        database_face.used_flag = 1
+        database_face.save()
     except Exception as e:
         # print(e)
         success = False
@@ -120,5 +124,6 @@ def feedback(request):
 
 
 def train(request):
+    success = Trainer.train(request)
     return HttpResponse(
-        do_message_maker(success=True))
+        do_message_maker(success=success))

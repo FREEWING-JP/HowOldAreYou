@@ -9,6 +9,8 @@ from sklearn.externals import joblib
 
 from HowOldAreYou.settings import SAVE_DIR
 
+__author__ = 'haoyu'
+
 # The paths
 __paths = {
     'MODEL_AGE': os.path.join(SAVE_DIR['MODEL'], 'model_age'),
