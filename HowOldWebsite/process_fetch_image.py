@@ -5,6 +5,7 @@ import os
 import uuid
 from urllib import request as urllib_request
 
+import skimage.exposure
 import skimage.io
 
 from HowOldAreYou.settings import SAVE_DIR
@@ -24,16 +25,16 @@ def image_fetch(request):
     image_file = request.FILES.getlist('file')
 
     if not image_url == '':
-        return do_fetch_image_by_url(
+        return __do_fetch_image_by_url(
             image_url, request, pic_id, upload_filename)
     elif len(image_file) >= 1:
-        return do_fetch_image_by_uploading(
+        return __do_fetch_image_by_uploading(
             image_file, request, pic_id, upload_filename)
     else:
         return False, None
 
 
-def do_fetch_image_by_uploading(file, request, pic_id, upload_filename):
+def __do_fetch_image_by_uploading(file, request, pic_id, upload_filename):
     # print('Save image by upload')
     try:
         image_file = file[0]
@@ -44,20 +45,21 @@ def do_fetch_image_by_uploading(file, request, pic_id, upload_filename):
                 destination.write(chunk)
 
         cv_image = skimage.io.imread(upload_filename)
+        cv_image = __do_image_process(cv_image)
         size_scale = os.path.getsize(upload_filename)
         record_original_image = \
-            do_save_original_image_to_database(pic_id=pic_id,
-                                               size_picture=cv_image.shape,
-                                               request=request,
-                                               method='UPLOAD',
-                                               size_scale=size_scale)
+            __do_save_original_image_to_database(pic_id=pic_id,
+                                                 size_picture=cv_image.shape,
+                                                 request=request,
+                                                 method='UPLOAD',
+                                                 size_scale=size_scale)
         return True, record_original_image, cv_image
     except Exception as e:
         # print(e)
         return False, None, None
 
 
-def do_fetch_image_by_url(url, request, pic_id, upload_filename):
+def __do_fetch_image_by_url(url, request, pic_id, upload_filename):
     # print('Save image by url')
     try:
         webfile = urllib_request.urlopen(url)
@@ -66,13 +68,14 @@ def do_fetch_image_by_url(url, request, pic_id, upload_filename):
             destination.write(file_content)
 
         cv_image = skimage.io.imread(upload_filename)
+        cv_image = __do_image_process(cv_image)
         size_scale = os.path.getsize(upload_filename)
         database_original_image = \
-            do_save_original_image_to_database(pic_id=pic_id,
-                                               size_picture=cv_image.shape,
-                                               request=request,
-                                               method='URL',
-                                               size_scale=size_scale)
+            __do_save_original_image_to_database(pic_id=pic_id,
+                                                 size_picture=cv_image.shape,
+                                                 request=request,
+                                                 method='URL',
+                                                 size_scale=size_scale)
 
         return True, database_original_image, cv_image
     except Exception as e:
@@ -80,7 +83,7 @@ def do_fetch_image_by_url(url, request, pic_id, upload_filename):
         return False, None, None
 
 
-def do_save_original_image_to_database(pic_id, size_picture, request, method, size_scale):
+def __do_save_original_image_to_database(pic_id, size_picture, request, method, size_scale):
     # url = 'UNKNOW'
     if 'UPLOAD' == method:
         url = 'USER_UPLOAD'
@@ -100,3 +103,10 @@ def do_save_original_image_to_database(pic_id, size_picture, request, method, si
     database_original_image.save()
 
     return database_original_image
+
+
+def __do_image_process(image):
+    # Hist equalize(bbut the result is not good)
+    # image = skimage.exposure.equalize_hist(image)
+    image = skimage.img_as_ubyte(image)
+    return image
