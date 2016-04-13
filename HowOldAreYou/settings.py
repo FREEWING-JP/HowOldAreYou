@@ -139,4 +139,8 @@ SAVE_DIR = {
     'FACE': os.path.join(MEDIA_ROOT, "face"),
     'FACE_GRAY': os.path.join(MEDIA_ROOT, "face_gray"),
     'MODEL': os.path.join(BASE_DIR, "model"),
+    'STD': os.path.join(BASE_DIR, "std"),
+    'STD_FACE_DESCRIPTION': os.path.join(BASE_DIR, "std", "face_description"),
+    'STD_FACE_IMAGE': os.path.join(BASE_DIR, "std", "face_image"),
+    'STD_FACE_MAT': os.path.join(BASE_DIR, "std", "face_mat"),
 }
