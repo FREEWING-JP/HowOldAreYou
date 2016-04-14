@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -39,9 +40,13 @@
 {% block footer_navbar %}
     <nav class="navbar navbar-default navbar-fixed-bottom hidden-xs">
         <div class="container">
-            <p class="navbar-text navbar-right">
-                Made with love.
-            </p>
+            {% if how_old_show_statics %}
+                <p class="navbar-text navbar-right">
+                    <span class="glyphicon glyphicon-picture"></span> {{ howold_photos|intcomma }}
+                    &
+                    <span class="glyphicon glyphicon-user"></span> {{ howold_faces|intcomma }}
+                </p>
+            {% endif %}
 
             <p class="navbar-text navbar-right">
                 <b>Version</b> {% now "Y" %}

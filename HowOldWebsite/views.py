@@ -9,6 +9,7 @@ from django.shortcuts import render
 from HowOldWebsite.process.process_estimate_smile import smile_estimate
 from HowOldWebsite.train.trainer import Trainer
 from .models import RecordFace
+from .models import RecordOriginalImage
 from .process.process_detect_face import face_detect
 from .process.process_estimate_age import age_estimate
 from .process.process_estimate_sex import sex_estimate
@@ -20,7 +21,14 @@ __author__ = 'Hao Yu'
 
 
 def index(request):
-    return render(request, 'index.html')
+    howold_photos = RecordOriginalImage.objects.count()
+    howold_faces = RecordFace.objects.count()
+    context = {
+        'how_old_show_statics': True,
+        'howold_photos': howold_photos,
+        'howold_faces': howold_faces,
+    }
+    return render(request, 'index.html', context)
 
 
 def fisher(request):
