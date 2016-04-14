@@ -11,7 +11,7 @@ import skimage.io
 
 from HowOldWebsite.models import RecordOriginalImage
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 def image_fetch(request):

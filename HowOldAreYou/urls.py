@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """HowOldAreYou URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,7 +20,9 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+__author__ = 'Hao Yu'
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('HowOldWebsite.urls'))
+                  url(r'^admin/', admin.site.urls),
+                  url(r'^', include('HowOldWebsite.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

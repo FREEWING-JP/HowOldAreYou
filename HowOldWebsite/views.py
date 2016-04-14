@@ -16,7 +16,7 @@ from .process.process_fetch_image import image_fetch
 from .process.process_result_arrange import result_arrange
 from .utils import do_message_maker
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 def index(request):

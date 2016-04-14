@@ -4,7 +4,7 @@ from HowOldWebsite.kernel import get_predictor
 from HowOldWebsite.kernel import named_feature_combine
 from HowOldWebsite.models import RecordSex
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 def sex_estimate(database_face_array, feature_extracted_array):

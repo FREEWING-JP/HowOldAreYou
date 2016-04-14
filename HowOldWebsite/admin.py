@@ -11,7 +11,7 @@ from .models import RecordOriginalImage
 from .models import RecordSex
 from .models import RecordSmile
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 # Record

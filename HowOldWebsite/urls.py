@@ -5,7 +5,7 @@ from django.views.generic.base import RedirectView
 
 from . import views
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 urlpatterns = [
     # The favicon.ico file

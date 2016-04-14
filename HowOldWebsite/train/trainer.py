@@ -14,7 +14,7 @@ from .trainer_age import TrainerAge
 from .trainer_sex import TrainerSex
 from .trainer_smile import TrainerSmile
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 class Trainer:

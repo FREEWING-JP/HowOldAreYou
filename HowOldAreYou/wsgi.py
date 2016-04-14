@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
 WSGI config for HowOldAreYou project.
 
@@ -11,6 +12,8 @@ import os
 import sys
 
 from django.core.wsgi import get_wsgi_application
+
+__author__ = 'Hao Yu'
 
 EXTRA_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 

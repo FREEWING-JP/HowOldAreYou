@@ -8,7 +8,7 @@ import numpy as np
 import skimage.feature
 from sklearn.externals import joblib
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 # The paths
 __paths = {

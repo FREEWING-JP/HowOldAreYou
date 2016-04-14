@@ -4,6 +4,8 @@ import uuid
 
 from django.db import models
 
+__author__ = 'Hao Yu'
+
 # ===== Picture Record =====
 
 RecordUsedFlag = ((0, 'Never Used'),

@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
 
-__author__ = 'haoyu'
-
 import json
 
 import cv2
 import skimage
 import skimage.color
 import skimage.io
+
+__author__ = 'Hao Yu'
 
 
 def do_rgb2gray(image):

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 def result_arrange(raw_image,

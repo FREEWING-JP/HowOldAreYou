@@ -11,7 +11,7 @@ from HowOldWebsite.kernel import get_feature_extractor
 from HowOldWebsite.utils import do_imread
 from HowOldWebsite.utils import do_rgb2gray
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 class Command(BaseCommand):

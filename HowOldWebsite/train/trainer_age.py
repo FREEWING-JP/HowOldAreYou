@@ -11,7 +11,7 @@ from HowOldWebsite.kernel import get_predictor
 from HowOldWebsite.models import ModelAge
 from .trainer_base import TrainerBase
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 class TrainerAge(TrainerBase):

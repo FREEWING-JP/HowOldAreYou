@@ -8,7 +8,7 @@ from sklearn.externals import joblib
 
 from HowOldWebsite.kernel import named_feature_combine
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 
 class Benchmarker:

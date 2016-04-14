@@ -12,7 +12,7 @@ from HowOldWebsite.kernel import get_feature_extractor
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils import do_rgb2gray
 
-__author__ = 'haoyu'
+__author__ = 'Hao Yu'
 
 def face_detect(database_original_image, image):
     try:
