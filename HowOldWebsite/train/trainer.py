@@ -3,9 +3,9 @@
 import os
 import threading
 
+import django.conf
 import numpy as np
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.kernel import get_feature_extractor
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils import do_imread
@@ -31,6 +31,8 @@ class Trainer:
         if Trainer.is_busy():
             return False
 
+        Trainer.__busy = True
+
         # Is it OK?
         th = threading.Thread(target=Trainer.__train_main, args=(request,))
         th.start()
@@ -39,6 +41,7 @@ class Trainer:
 
     @classmethod
     def __train_main(cls, request):
+        SAVE_DIR = django.conf.settings.SAVE_DIR
         if_train_sex = False
         if_train_age = False
         if_train_smile = False
@@ -57,6 +60,12 @@ class Trainer:
         try:
             faces = RecordFace.objects.filter(used_flag=1)
             n_faces = len(faces)
+            if not django.conf.settings.DEBUG:
+                if (n_faces < 100):
+                    print("Error: The training set is too small.")
+                    print("\t Skip the training!")
+                    raise Exception()
+
             # The result array
             features = {
                 'landmark': [],
@@ -137,8 +146,10 @@ class Trainer:
                     # print(e)
                     pass
 
-                    # Change the used flag
-                    # faces.update(used_flag=2)
+            # Change the used flag
+            if not django.conf.settings.DEBUG:
+                faces.update(used_flag=2)
+
         except Exception as e:
             # print(e)
             print("Error occurred while training")

@@ -3,7 +3,6 @@
 import os
 from time import clock
 
-import scipy.io
 from django.core.management.base import BaseCommand
 from sklearn.externals import joblib
 
@@ -51,7 +50,7 @@ class Command(BaseCommand):
                 feature = {}
                 image_filename = item[0]
                 image_path = os.path.join(face_file_path, image_filename)
-                image_feature_path = os.path.join(mat_file_path, image_filename + '.mat')
+                image_feature_path = os.path.join(mat_file_path, image_filename + '.pkl')
 
                 # Go
                 cv_face_image = do_imread(image_path)
@@ -65,14 +64,24 @@ class Command(BaseCommand):
                 f_lbp_hog = extractor_lbp_hog(face_gray)
 
                 # Save features
-                feature['landmark'] = f_landmark
-                feature['rbm'] = f_rbm
-                feature['hog'] = f_hog
-                feature['lbp'] = f_lbp
-                feature['lbp_hog'] = f_lbp_hog
+                feature['landmark'] = [f_landmark]
+                feature['rbm'] = [f_rbm]
+                feature['hog'] = [f_hog]
+                feature['lbp'] = [f_lbp]
+                feature['lbp_hog'] = [f_lbp_hog]
+                image_info = {}
+                image_info["feature"] = feature
+                if 'Male' == item[3]:
+                    image_info["sex"] = 1
+                else:
+                    image_info["sex"] = 0
+                image_info["age"] = int(item[1])
+                image_info["age_lambda"] = float(item[2])
+                image_info["smile"] = float(item[5])
 
                 # Save to disk
-                scipy.io.savemat(image_feature_path, feature)
+                # scipy.io.savemat(image_feature_path, image_info)
+                joblib.dump(image_info, image_feature_path)
 
                 # Print it
                 print("Success: {}".format(image_filename))
