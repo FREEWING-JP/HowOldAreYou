@@ -147,7 +147,7 @@ def load_predictor(model_name, model_id=None):
     }
     try:
         if model_id is None:
-            model_class = __model_classes[model_name.lower]
+            model_class = __model_classes[model_name.lower()]
             model_obj = model_class.objects.filter(used_flag=1).order_by('-gen_time').first()
             if model_obj is None:
                 model_id = 'default'
