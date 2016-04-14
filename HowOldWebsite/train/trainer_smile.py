@@ -4,9 +4,9 @@ import copy
 import os
 import uuid
 
+import django.conf
 from sklearn.externals import joblib
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.kernel import get_predictor
 from HowOldWebsite.models import ModelSmile
 from .trainer_base import TrainerBase
@@ -19,7 +19,7 @@ class TrainerSmile(TrainerBase):
         TrainerBase.__init__(self)
         self.model_name = 'smile'
         self.model_id = uuid.uuid4()
-        self.model_path = os.path.join(SAVE_DIR['MODEL'],
+        self.model_path = os.path.join(django.conf.settings.SAVE_DIR['MODEL'],
                                        'model_' + self.model_name.lower(),
                                        str(self.model_id))
         self.model_file_path = os.path.join(self.model_path,

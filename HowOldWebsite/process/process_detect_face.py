@@ -3,17 +3,16 @@
 import os
 import uuid
 
+import django.conf
 import dlib
 import skimage.io
 import skimage.transform
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.kernel import get_feature_extractor
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils import do_rgb2gray
 
 __author__ = 'haoyu'
-
 
 def face_detect(database_original_image, image):
     try:
@@ -57,7 +56,7 @@ def __do_save_face(database_original_image, image, faces):
             face_id = uuid.uuid4()
 
             # Make the filename
-            face_filename_color = os.path.join(SAVE_DIR['FACE'], str(face_id) + '.jpg')
+            face_filename_color = os.path.join(django.conf.settings.SAVE_DIR['FACE'], str(face_id) + '.jpg')
             # face_filename_gray = os.path.join(SAVE_DIR['FACE_GRAY'], str(face_id) + '.jpg')
 
             # Get the face range

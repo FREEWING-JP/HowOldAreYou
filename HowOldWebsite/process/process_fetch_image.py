@@ -5,10 +5,10 @@ import os
 import uuid
 from urllib import request as urllib_request
 
+import django.conf
 import skimage.exposure
 import skimage.io
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.models import RecordOriginalImage
 
 __author__ = 'haoyu'
@@ -17,7 +17,7 @@ __author__ = 'haoyu'
 def image_fetch(request):
     # Generate the id and save path
     pic_id = uuid.uuid4()
-    upload_filename = os.path.join(SAVE_DIR['ORIGINAL_IMAGE'], str(pic_id) + '.jpg')
+    upload_filename = os.path.join(django.conf.settings.SAVE_DIR['ORIGINAL_IMAGE'], str(pic_id) + '.jpg')
 
     # There are two ways to get the image:
     # Uploading and URL

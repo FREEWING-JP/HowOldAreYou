@@ -2,22 +2,21 @@
 
 import os
 
+import django.conf
 import dlib
 import numpy as np
 import skimage.feature
 from sklearn.externals import joblib
 
-from HowOldAreYou.settings import SAVE_DIR
-
 __author__ = 'haoyu'
 
 # The paths
 __paths = {
-    'MODEL_AGE': os.path.join(SAVE_DIR['MODEL'], 'model_age'),
-    'MODEL_SEX': os.path.join(SAVE_DIR['MODEL'], 'model_sex'),
-    'MODEL_SMILE': os.path.join(SAVE_DIR['MODEL'], 'model_smile'),
-    'FEATURE_LANDMARK': os.path.join(SAVE_DIR['MODEL'], 'feature_landmark'),
-    'FEATURE_RBM': os.path.join(SAVE_DIR['MODEL'], 'feature_rbm'),
+    'MODEL_AGE': os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'model_age'),
+    'MODEL_SEX': os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'model_sex'),
+    'MODEL_SMILE': os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'model_smile'),
+    'FEATURE_LANDMARK': os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'feature_landmark'),
+    'FEATURE_RBM': os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'feature_rbm'),
 }
 
 # The rectangle in dlib
@@ -67,7 +66,7 @@ def __do_hog(image_gray, pixels_per_cell=(16, 16), cells_per_block=(1, 1)):
 def __do_rbm(image):
     if __doer['rbm'] is None:
         __doer['rbm'] = joblib.load(
-            os.path.join(SAVE_DIR['MODEL'], 'feature_rbm', 'rbm.pkl'))
+            os.path.join(django.conf.settings.SAVE_DIR['MODEL'], 'feature_rbm', 'rbm.pkl'))
     doer = __doer['rbm']
     feature = doer.transform(image.reshape(1, -1))
     return feature[0].ravel()

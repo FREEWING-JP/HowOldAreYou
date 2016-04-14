@@ -3,10 +3,10 @@
 import os
 from time import clock
 
+import django.conf
 from django.core.management.base import BaseCommand
 from sklearn.externals import joblib
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.kernel import get_feature_extractor
 from HowOldWebsite.utils import do_imread
 from HowOldWebsite.utils import do_rgb2gray
@@ -27,9 +27,9 @@ class Command(BaseCommand):
 
         # The directories
         description_file_path = os.path.join(
-            SAVE_DIR['STD_FACE_DESCRIPTION'], "how_old_data.pkl")
-        mat_file_path = SAVE_DIR['STD_FACE_MAT']
-        face_file_path = SAVE_DIR['STD_FACE_IMAGE']
+            django.conf.settings.SAVE_DIR['STD_FACE_DESCRIPTION'], "how_old_data.pkl")
+        mat_file_path = django.conf.settings.SAVE_DIR['STD_FACE_MAT']
+        face_file_path = django.conf.settings.SAVE_DIR['STD_FACE_IMAGE']
 
         # Load the description file
         description_file = joblib.load(description_file_path)

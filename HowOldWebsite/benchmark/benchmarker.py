@@ -2,10 +2,10 @@
 
 import os
 
+import django.conf
 import numpy as np
 from sklearn.externals import joblib
 
-from HowOldAreYou.settings import SAVE_DIR
 from HowOldWebsite.kernel import named_feature_combine
 
 __author__ = 'haoyu'
@@ -14,9 +14,10 @@ __author__ = 'haoyu'
 class Benchmarker:
     def __init__(self):
         self.__data_description = None
-        self.__data_description_file_path = os.path.join(SAVE_DIR['STD_FACE_DESCRIPTION'], "how_old_data.pkl")
+        self.__data_description_file_path = os.path.join(django.conf.settings.SAVE_DIR['STD_FACE_DESCRIPTION'],
+                                                         "how_old_data.pkl")
         # self.__data_face_path = SAVE_DIR['STD_FACE_IMAGE']
-        self.__data_mat_file_path = SAVE_DIR['STD_FACE_MAT']
+        self.__data_mat_file_path = django.conf.settings.SAVE_DIR['STD_FACE_MAT']
 
     def get_benchmark(self, model, model_name):
         if self.__data_description is None:
