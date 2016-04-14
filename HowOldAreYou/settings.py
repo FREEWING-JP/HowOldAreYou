@@ -31,7 +31,7 @@ ADMINS = [
     ('Hao Yu', 'jinyu121@haoyu.love'),
 ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -57,6 +57,18 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'HowOldAreYou.urls'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_BROWSER_XSS_FILTER = True
+
+SESSION_COOKIE_SECURE = True
+
+# CSRF_COOKIE_SECURE = True
+
+# CSRF_COOKIE_HTTPONLY = True
+
+X_FRAME_OPTIONS = 'DENY'
 
 TEMPLATES = [
     {
