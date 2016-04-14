@@ -27,6 +27,10 @@ SECRET_KEY = 'ycu(5#-j#m=7f(if$ngih7p6j05^e7slktcedb9x)c19pv&%jq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ADMINS = [
+    ('Hao Yu', 'jinyu121@haoyu.love'),
+]
+
 ALLOWED_HOSTS = []
 
 # Application definition
