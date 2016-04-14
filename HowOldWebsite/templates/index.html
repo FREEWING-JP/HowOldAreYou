@@ -28,9 +28,6 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">How Old Are You</a>
         </div>
-        <div class="collapse navbar-collapse">
-            <p class="navbar-text navbar-right">Powered By HaoYu</p>
-        </div>
     </div>
 </nav>
 
@@ -207,7 +204,25 @@
         </div>
     </div>
 </div>
+<nav class="navbar navbar-default navbar-fixed-bottom hidden-xs">
+    <div class="container">
+        <p class="navbar-text navbar-right">
+            Made with love.
+        </p>
 
+        <p class="navbar-text navbar-right">
+            <b>Version</b> {% now "Y" %}
+        </p>
+
+        <p class="navbar-text">
+            <strong>
+                Copyright &copy; 2012-{% now "Y" %}
+                <a href="http://haoyu.love">Hao Yu</a>.
+            </strong>
+            All rights reserved.
+        </p>
+    </div>
+</nav>
 
 <script src="{% static 'frameworks/jQuery/jQuery-2.1.4.min.js' %}"></script>
 <script src="{% static 'frameworks/Bootstrap/js/bootstrap.min.js' %}"></script>
