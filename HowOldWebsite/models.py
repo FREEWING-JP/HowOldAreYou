@@ -2,7 +2,9 @@
 
 import uuid
 
+import django.conf
 from django.db import models
+from django.utils.html import format_html
 
 __author__ = 'Hao Yu'
 
@@ -11,8 +13,6 @@ __author__ = 'Hao Yu'
 RecordUsedFlag = ((0, 'Never Used'),
                   (1, 'Available For Train'),
                   (2, 'Used For Train'))
-ModelUsedFlag = ((0, 'Freeing'),
-                 (1, 'Using'))
 
 
 class RecordOriginalImage(models.Model):
@@ -39,14 +39,27 @@ class RecordFace(models.Model):
     location_bottom = models.IntegerField(default=0)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
+    def __str__(self):
+        s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'
+        return format_html(s, django.conf.settings.MEDIA_URL, str(self.id))
+
+
+RecordSexFlag = ((-1, 'Unknown'),
+                 (0, 'Female'),
+                 (1, 'Male'))
+
 
 class RecordSex(models.Model):
     # The sexs of the faces detected
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    sex_predict = models.IntegerField(default=0)
-    sex_user = models.IntegerField(blank=True, default=-1)
+    sex_predict = models.IntegerField(choices=RecordSexFlag, default=0)
+    sex_user = models.IntegerField(choices=RecordSexFlag, blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
+
+    def __str__(self):
+        s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'
+        return format_html(s, django.conf.settings.MEDIA_URL, str(self.original_face.id))
 
 
 class RecordAge(models.Model):
@@ -57,6 +70,10 @@ class RecordAge(models.Model):
     age_user = models.IntegerField(blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
+    def __str__(self):
+        s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'
+        return format_html(s, django.conf.settings.MEDIA_URL, str(self.original_face.id))
+
 
 class RecordSmile(models.Model):
     # The smile degrees of the faces detected
@@ -66,8 +83,16 @@ class RecordSmile(models.Model):
     smile_user = models.IntegerField(blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
+    def __str__(self):
+        s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'
+        return format_html(s, django.conf.settings.MEDIA_URL, str(self.original_face.id))
+
 
 # ===== Model Record =====
+
+ModelUsedFlag = ((0, 'Unused'),
+                 (1, 'Using'))
+
 
 class ModelSex(models.Model):
     # The Sex Model
