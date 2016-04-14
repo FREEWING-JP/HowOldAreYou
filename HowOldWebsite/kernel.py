@@ -8,6 +8,10 @@ import numpy as np
 import skimage.feature
 from sklearn.externals import joblib
 
+from HowOldWebsite.models import ModelAge
+from HowOldWebsite.models import ModelSex
+from HowOldWebsite.models import ModelSmile
+
 __author__ = 'Hao Yu'
 
 # The paths
@@ -133,15 +137,26 @@ def get_predictor(name):
 def load_predictor(model_name, model_id=None):
     '''
     If the id is not specified, we will find the model which is bing used or the
-    newest, and read the id.
-    Then we will load /model/model_NAME/ID/NAME.pkl ,
+    newest, and read the id. Then we will load `/model/model_NAME/ID/NAME.pkl`.
+    The default model will be load if there is no model on using.
     '''
+    __model_classes = {
+        'sex': ModelSex,
+        'age': ModelAge,
+        'smile': ModelSmile,
+    }
     try:
         if model_id is None:
-            # Todo: Find the newest model and read the id
-            model_id = 'default'
+            model_class = __model_classes[model_name.lower]
+            model_obj = model_class.objects.filter(used_flag=1).order_by('-gen_time').first()
+            if model_obj is None:
+                model_id = 'default'
+            else:
+                model_id = model_obj.id
 
+        # Load the model
         path = os.path.join(__paths['MODEL_' + model_name.upper()], str(model_id), model_name.lower() + '.pkl')
         __map_predictor[model_name] = joblib.load(path)
-    except:
+    except Exception as e:
+        # print(e)
         pass
