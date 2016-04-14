@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block subtitle %} | {% block title_error %} Error {% endblock %}{% endblock %}
+
+{% block main_content %}
+    <div class="container-fluid how-old-page">
+        <div class="jumbotron">
+            <div class="container text-center">
+
+                {% block content_error %}
+                {% endblock %}
+
+                <p><a class="btn btn-link btn-lg" href="{% url 'index' %}" role="button">Back Home</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

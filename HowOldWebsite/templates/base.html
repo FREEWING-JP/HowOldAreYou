@@ -1,0 +1,66 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}How Old Are You{% endblock %}{% block subtitle %}{% endblock %}</title>
+    {% block framework_bootstrap_css %}
+        <link href="{% static 'frameworks/Bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% endblock %}
+    {% block header_css %}{% endblock %}
+    {% block header_css_common %}
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% endblock %}
+    <!--[if lt IE 9]>
+      <script src="{% static 'html5shiv/html5shiv.min.js' %}"></script>
+      <script src="{% static 'respond/respond.min.js' %}"></script>
+    <![endif]-->
+    {% block header_js %}
+        <script type="text/javascript">
+
+        </script>
+    {% endblock %}
+</head>
+<body>
+{% block header_navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">How Old Are You</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block main_content %}{% endblock %}
+
+{% block footer_navbar %}
+    <nav class="navbar navbar-default navbar-fixed-bottom hidden-xs">
+        <div class="container">
+            <p class="navbar-text navbar-right">
+                Made with love.
+            </p>
+
+            <p class="navbar-text navbar-right">
+                <b>Version</b> {% now "Y" %}
+            </p>
+
+            <p class="navbar-text">
+                <strong>
+                    Copyright &copy; 2012-{% now "Y" %}
+                    <a href="http://haoyu.love">Hao Yu</a>.
+                </strong>
+                All rights reserved.
+            </p>
+        </div>
+    </nav>
+{% endblock %}
+{% block framework_bootstrap_js %}
+    <script src="{% static 'frameworks/jQuery/jQuery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'frameworks/Bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block footer_js %}{% endblock %}
+</body>
+</html>

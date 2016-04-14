@@ -1,18 +1,11 @@
+{% extends "base.html" %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>How Old Are You | Powered By HaoYu</title>
-    <link href="{% static 'frameworks/Bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block header_css %}
     <link href="{% static 'frameworks/Dropzone/dropzone.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <!--[if lt IE 9]>
-      <script src="{% static 'html5shiv/html5shiv.min.js' %}"></script>
-      <script src="{% static 'respond/respond.min.js' %}"></script>
-    <![endif]-->
+{% endblock %}
+
+{% block header_js %}
     <script type="text/javascript">
         var $CONFIG = {};
         $CONFIG['fisher'] = '{% url 'fisher' %}';
@@ -21,212 +14,186 @@
         $CONFIG['image_sex_male'] = '{% static 'img/icon-gender-male.png' %}';
         $CONFIG['image_sex_female'] = '{% static 'img/icon-gender-female.png' %}';
     </script>
-</head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">How Old Are You</a>
-        </div>
-    </div>
-</nav>
+{% endblock %}
 
-<div id="how-old-init-zone" class="container-fluid how-old-page">
-    <div class="row">
-        <div class="col-sm-6 col-sm-push-3 text-center">
-            <form id="how_old_drop_zone" class="dropzone">
+{% block main_content %}
+    <div id="how-old-init-zone" class="container-fluid how-old-page">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3 text-center">
+                <form id="how_old_drop_zone" class="dropzone">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3 text-center">
+                <h3>Or</h3>
+            </div>
+        </div>
+        <div class="row">
+            <form id="how_old_url" class="col-sm-6 col-sm-push-3" method="POST">
                 {% csrf_token %}
+                <div class="input-group input-group-lg">
+                    <input type="text" name="ImageURL" class="form-control" placeholder="Input The URL Of Your Photo"/>
+                <span class="input-group-btn">
+                    <button id="how_old_url_submit" class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-send"></span>
+                    </button>
+                </span>
+                </div>
             </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6 col-sm-push-3 text-center">
-            <h3>Or</h3>
-        </div>
-    </div>
-    <div class="row">
-        <form id="how_old_url" class="col-sm-6 col-sm-push-3" method="POST">
-            {% csrf_token %}
-            <div class="input-group input-group-lg">
-                <input type="text" name="ImageURL" class="form-control" placeholder="Input The URL Of Your Photo"/>
-                <span class="input-group-btn">
-                    <button id="how_old_url_submit" class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-picture"></span>
-                    </button>
-                </span>
-            </div>
-        </form>
-    </div>
-</div>
 
-<div id="how-old-waiting-zone" class="container-fluid how-old-page hidden">
-    <div class="jumbotron col-sm-6 col-sm-push-3">
-        <h1>Processing...</h1>
+    <div id="how-old-waiting-zone" class="container-fluid how-old-page hidden">
+        <div class="jumbotron col-sm-6 col-sm-push-3">
+            <h1>Processing...</h1>
 
-        <p>It will be OK in a few seconds...</p>
+            <p>It will be OK in a few seconds...</p>
 
-        <p>:)</p>
+            <p>:)</p>
 
-        <div class="progress">
-            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 25%">
-                <span class="sr-only">Uploading picture...</span>
-            </div>
-            <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 25%">
-                <span class="sr-only">Processing...</span>
-            </div>
-            <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 25%">
-                <span class="sr-only">Processing...</span>
-            </div>
-            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 25%">
-                <span class="sr-only">Processing...</span>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 25%">
+                    <span class="sr-only">Uploading picture...</span>
+                </div>
+                <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 25%">
+                    <span class="sr-only">Processing...</span>
+                </div>
+                <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 25%">
+                    <span class="sr-only">Processing...</span>
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 25%">
+                    <span class="sr-only">Processing...</span>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="how-old-preview-zone" class="container-fluid how-old-page hidden">
-    <div class="row">
-        <div class="col-sm-6 col-sm-push-3 text-center">
-            <div class="row">
-                <div id="how-old-picture-area" class="col-sm-12">
-                    <div id="how-old-picture-wrapper">
-                        <img id="how-old_picture-area-picture" class="img-responsive center-block"
-                             src="{% static 'img/default.jpg' %}" alt="How Old Are You">
+    <div id="how-old-preview-zone" class="container-fluid how-old-page hidden">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3 text-center">
+                <div class="row">
+                    <div id="how-old-picture-area" class="col-sm-12">
+                        <div id="how-old-picture-wrapper">
+                            <img id="how-old_picture-area-picture" class="img-responsive center-block"
+                                 src="{% static 'img/default.jpg' %}" alt="How Old Are You">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-success btn-lg btn-block retry-button">Try again</button>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <button type="button" class="btn btn-success btn-lg btn-block retry-button">Try again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="how-old-error-zone" class="container-fluid how-old-page hidden">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3">
+                <div class="page-header">
+                    <h1>
+                        Oooooops~
+                        <small>Error occurred</small>
+                    </h1>
                 </div>
+
+                <h3>What happened?</h3>
+                <blockquote>
+                    <p id="how-old-error-zone-error-message">Error info here</p>
+                </blockquote>
+                <h3>Any tips?</h3>
+                <blockquote>
+                    <p id="how-old-error-zone-error-tip">Tip here</p>
+                </blockquote>
+                <button type="button" class="btn btn-danger btn-lg btn-block retry-button">Try again</button>
             </div>
         </div>
     </div>
-</div>
-
-<div id="how-old-error-zone" class="container-fluid how-old-page hidden">
-    <div class="row">
-        <div class="col-sm-6 col-sm-push-3">
-            <div class="page-header">
-                <h1>
-                    Oooooops~
-                    <small>Error occurred</small>
-                </h1>
-            </div>
-
-            <h3>What happened?</h3>
-            <blockquote>
-                <p id="how-old-error-zone-error-message">Error info here</p>
-            </blockquote>
-            <h3>Any tips?</h3>
-            <blockquote>
-                <p id="how-old-error-zone-error-tip">Tip here</p>
-            </blockquote>
-            <button type="button" class="btn btn-danger btn-lg btn-block retry-button">Try again</button>
-        </div>
-    </div>
-</div>
 
 
-<div class="modal fade" id="how-old-feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Help us to improve!
-                    <small>We can make it better~</small>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div id="how-old-feedback-main" class="row how-old-feedback-element">
-                    <form id="how-old-feedback-form" class="col-xs-12 form-horizontal">
-                        {% csrf_token %}
-                        <input type="hidden" id="how-old-feedback-data-face-id" name="face_id"/>
+    <div class="modal fade" id="how-old-feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Help us to improve!
+                        <small>We can make it better~</small>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div id="how-old-feedback-main" class="row how-old-feedback-element">
+                        <form id="how-old-feedback-form" class="col-xs-12 form-horizontal">
+                            {% csrf_token %}
+                            <input type="hidden" id="how-old-feedback-data-face-id" name="face_id"/>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Sex</label>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Sex</label>
 
-                            <div class="col-sm-4">
-                                <select id="how-old-feedback-data-face-sex" name="sex" class="form-control">
-                                    <option value="0">Female</option>
-                                    <option value="1">Male</option>
-                                </select>
-                            </div>
+                                <div class="col-sm-4">
+                                    <select id="how-old-feedback-data-face-sex" name="sex" class="form-control">
+                                        <option value="0">Female</option>
+                                        <option value="1">Male</option>
+                                    </select>
+                                </div>
 
-                            <label class="col-sm-2 control-label">Age</label>
+                                <label class="col-sm-2 control-label">Age</label>
 
-                            <div class="col-sm-4">
-                                <input id="how-old-feedback-data-face-age" name="age" type="number" min="0" max="100"
-                                       class="form-control" placeholder="Age"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Smile</label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group ">
-                                    <span class="input-group-addon">Sad</span>
-                                    <input id="how-old-feedback-data-face-smile" name="smile" type="range"
-                                           class="form-control" min="0" max="100" placeholder="Smile"/>
-                                    <span class="input-group-addon">Laughing</span>
+                                <div class="col-sm-4">
+                                    <input id="how-old-feedback-data-face-age" name="age" type="number" min="0"
+                                           max="100"
+                                           class="form-control" placeholder="Age"/>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Smile</label>
+
+                                <div class="col-sm-10">
+                                    <div class="input-group ">
+                                        <span class="input-group-addon">Sad</span>
+                                        <input id="how-old-feedback-data-face-smile" name="smile" type="range"
+                                               class="form-control" min="0" max="100" placeholder="Smile"/>
+                                        <span class="input-group-addon">Laughing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="how-old-feedback-success" class="row how-old-feedback-element">
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2">
+                                <h2>Thanks!</h2>
+
+                                <p>We have received your data.</p>
+
+                                <p>We can make it better :)</p>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div id="how-old-feedback-success" class="row how-old-feedback-element">
-                    <div class="row">
-                        <div class="col-xs-8 col-xs-offset-2">
-                            <h2>Thanks!</h2>
+                    </div>
+                    <div id="how-old-feedback-error" class="row how-old-feedback-element">
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2">
+                                <h2>Oooooops~</h2>
 
-                            <p>We have received your data.</p>
+                                <p>Some error occurred.</p>
 
-                            <p>We can make it better :)</p>
+                                <p>:(</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="how-old-feedback-error" class="row how-old-feedback-element">
-                    <div class="row">
-                        <div class="col-xs-8 col-xs-offset-2">
-                            <h2>Oooooops~</h2>
-
-                            <p>Some error occurred.</p>
-
-                            <p>:(</p>
-                        </div>
-                    </div>
+                <div id="how-old-feedback-control" class="modal-footer how-old-feedback-element">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="how-old-feedback-submit">Send</button>
                 </div>
-            </div>
-            <div id="how-old-feedback-control" class="modal-footer how-old-feedback-element">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="how-old-feedback-submit">Send</button>
             </div>
         </div>
     </div>
-</div>
-<nav class="navbar navbar-default navbar-fixed-bottom hidden-xs">
-    <div class="container">
-        <p class="navbar-text navbar-right">
-            Made with love.
-        </p>
+{% endblock %}
 
-        <p class="navbar-text navbar-right">
-            <b>Version</b> {% now "Y" %}
-        </p>
-
-        <p class="navbar-text">
-            <strong>
-                Copyright &copy; 2012-{% now "Y" %}
-                <a href="http://haoyu.love">Hao Yu</a>.
-            </strong>
-            All rights reserved.
-        </p>
-    </div>
-</nav>
-
-<script src="{% static 'frameworks/jQuery/jQuery-2.1.4.min.js' %}"></script>
-<script src="{% static 'frameworks/Bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'frameworks/Dropzone/dropzone.js' %}"></script>
-<script src="{% static 'js/howoldareyou.js' %}"></script>
-</body>
-</html>
+{% block footer_js %}
+    <script src="{% static 'frameworks/Dropzone/dropzone.js' %}"></script>
+    <script src="{% static 'js/howoldareyou.js' %}"></script>
+{% endblock %}
