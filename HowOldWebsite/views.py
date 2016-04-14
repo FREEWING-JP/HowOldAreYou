@@ -124,6 +124,18 @@ def feedback(request):
 
 
 def train(request):
-    success = Trainer.train(request)
+    train_models = []
+    model_names = ['sex', 'age', 'smile']
+    if "POST" == request.method:
+        for mod in model_names:
+            if request.POST.get(mod, '') in [True, "true", 1]:
+                train_models.append(mod)
+
+    if "GET" == request.method:
+        for mod in model_names:
+            if request.POST.get(mod, '') in [True, "true", 1]:
+                train_models.append(mod)
+
+    success = Trainer.train(train_models)
     return HttpResponse(
         do_message_maker(success=success))

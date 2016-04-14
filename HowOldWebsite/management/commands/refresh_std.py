@@ -15,7 +15,7 @@ __author__ = 'Hao Yu'
 
 
 class Command(BaseCommand):
-    help = 'Refresh the STD files'
+    help = 'Refresh the STD files.'
 
     def add_arguments(self, parser):
         pass

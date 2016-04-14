@@ -40,20 +40,11 @@ class Trainer:
         return True
 
     @classmethod
-    def __train_main(cls, request):
+    def __train_main(cls, model_names):
         SAVE_DIR = django.conf.settings.SAVE_DIR
         if_train_sex = False
         if_train_age = False
         if_train_smile = False
-        if "POST" == request.method:
-            if_train_sex = request.POST.get('sex', '')
-            if_train_age = request.POST.get('age', '')
-            if_train_smile = request.POST.get('smile', '')
-
-        if "GET" == request.method:
-            if_train_sex = request.GET.get('sex', '')
-            if_train_age = request.GET.get('age', '')
-            if_train_smile = request.GET.get('smile', '')
 
         print("=" * 10 + " Train Start " + "=" * 10)
 
@@ -122,7 +113,7 @@ class Trainer:
             target_smile = np.array(target_smile)
 
             # Train
-            if if_train_sex in [True, 'true', '1']:
+            if 'sex' in model_names:
                 try:
                     worker = TrainerSex()
                     worker.train(n_faces, features, target_sex)
@@ -130,7 +121,7 @@ class Trainer:
                     # print(e)
                     pass
 
-            if if_train_age in [True, 'true', '1']:
+            if 'age' in model_names:
                 try:
                     worker = TrainerAge()
                     worker.train(n_faces, features, target_age)
@@ -138,7 +129,7 @@ class Trainer:
                     # print(e)
                     pass
 
-            if if_train_smile in [True, 'true', '1']:
+            if 'smile' in model_names:
                 try:
                     worker = TrainerSmile()
                     worker.train(n_faces, features, target_smile)
