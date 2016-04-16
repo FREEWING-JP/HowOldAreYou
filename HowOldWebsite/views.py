@@ -31,6 +31,32 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+def review(request):
+    return render(request, 'review.html')
+
+
+def review_data(request):
+    how_old_face = RecordFace.objects.filter(used_flag=0).first()
+    result = {}
+    success = True
+    try:
+        how_old_sex = how_old_face.recordsex_set.first()
+        how_old_age = how_old_face.recordage_set.first()
+        how_old_smile = how_old_face.recordsmile_set.first()
+        result['id'] = str(how_old_face.id)
+        result['sex'] = how_old_sex.sex_predict
+        result['age'] = how_old_age.age_predict
+        result['smile'] = how_old_smile.smile_predict
+    except Exception as e:
+        # print(e)
+        success = False
+        pass
+
+    return HttpResponse(
+        do_message_maker(success=success,
+                         message=result))
+
+
 def fisher(request):
     result = {}
 

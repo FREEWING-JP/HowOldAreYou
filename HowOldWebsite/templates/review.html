@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block header_js %}
+    <script type="text/javascript">
+        var $CONFIG = {};
+        $CONFIG['review_data'] = '{% url 'review_data' %}';
+        $CONFIG['feedback'] = '{% url 'feedback' %}';
+        $CONFIG['face'] = '{{ MEDIA_URL }}face/';
+    </script>
+{% endblock %}
+
+{% block main_content %}
+    <div id="how-old-init-zone" class="container-fluid how-old-page">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3">
+                <div class="page-header">
+                    <h1>
+                        Loading...
+                        <small>It will be OK in seconds.</small>
+                    </h1>
+                </div>
+                <h3>What does it for?</h3>
+                <blockquote>
+                    <p id="how-old-success-zone-error-message">
+                        Your feedback will help us to improve the model.<br/>
+                        The data is randomly, and anonymously.
+                    </p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+    <div id="how-old-preview-zone" class="container-fluid how-old-page hidden">
+        <div class="row">
+            <div class="col-sm-3 col-sm-offset-3">
+                <img id="how-old_picture-area-picture" class="img-responsive center-block"
+                     src="{% static 'img/default.jpg' %}" alt="How Old Are You">
+            </div>
+            <div class="col-sm-3 ">
+                <form id="how-old-feedback-form">
+                    {% csrf_token %}
+                    <input type="hidden" id="how-old-feedback-data-face-id" name="face_id"/>
+
+                    <div class="form-group">
+                        <label class="control-label">Sex</label>
+
+                        <select id="how-old-feedback-data-face-sex" name="sex" class="form-control">
+                            <option value="0">Female</option>
+                            <option value="1">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">Age</label>
+
+                        <input id="how-old-feedback-data-face-age" name="age" type="number" min="0"
+                               max="100" class="form-control" placeholder="Age"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Smile</label>
+
+                        <div class="input-group ">
+                            <span class="input-group-addon">Sad</span>
+                            <input id="how-old-feedback-data-face-smile" name="smile" type="range"
+                                   class="form-control" min="0" max="100" placeholder="Smile"/>
+                            <span class="input-group-addon">Laugh</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-block btn-primary" id="how-old-feedback-submit">Send
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="how-old-success-zone" class="container-fluid how-old-page hidden">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3">
+                <div class="page-header">
+                    <h1>
+                        Thanks!
+                    </h1>
+                </div>
+
+                <h3>We have received your feedback!</h3>
+                {#                <blockquote>#}
+                {#                    <p id="how-old-success-zone-error-message">#}
+                {#                        #}
+                {#                    </p>#}
+                {#                </blockquote>#}
+                <h3>Do you know?</h3>
+                <blockquote>
+                    <p id="how-old-success-zone-error-tip">
+                        Your feedback will help us improving the model!
+                    </p>
+                </blockquote>
+                <button type="button" class="btn btn-success btn-lg btn-block retry-button">Try again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="how-old-error-zone" class="container-fluid how-old-page hidden">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-3">
+                <div class="page-header">
+                    <h1>
+                        Oooooops~
+                        <small>Error occurred</small>
+                    </h1>
+                </div>
+
+                <h3>What happened?</h3>
+                <blockquote>
+                    <p id="how-old-error-zone-error-message">Error info here</p>
+                </blockquote>
+                <h3>Any tips?</h3>
+                <blockquote>
+                    <p id="how-old-error-zone-error-tip">Tip here</p>
+                </blockquote>
+                <button type="button" class="btn btn-danger btn-lg btn-block retry-button">Try again</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_js %}
+    <script src="{% static 'js/howoldareyou_review.js' %}"></script>
+{% endblock %}
