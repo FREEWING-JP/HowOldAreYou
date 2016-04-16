@@ -11,6 +11,7 @@ from sklearn.externals import joblib
 from HowOldWebsite.models import ModelAge
 from HowOldWebsite.models import ModelSex
 from HowOldWebsite.models import ModelSmile
+from HowOldWebsite.utils import do_rgb2gray
 
 __author__ = 'Hao Yu'
 
@@ -91,6 +92,34 @@ def get_feature_extractor(name):
     except Exception as e:
         # print(e)
         return None
+
+
+def feature_extract_all(image):
+    image_gray = do_rgb2gray(image)
+
+    feature = {}
+
+    extractor_landmark = get_feature_extractor('LANDMARK')
+    extractor_rbm = get_feature_extractor('RBM')
+    extractor_hog = get_feature_extractor('HOG')
+    extractor_lbp = get_feature_extractor('LBP')
+    extractor_lbp_hog = get_feature_extractor('LBP_HOG')
+
+    # Get features
+    f_landmark = extractor_landmark(image_gray)
+    f_rbm = extractor_rbm(image)
+    f_hog = extractor_hog(image_gray)
+    f_lbp = extractor_lbp(image_gray)
+    f_lbp_hog = extractor_lbp_hog(image_gray)
+
+    # Save features
+    feature['landmark'] = [f_landmark]
+    feature['rbm'] = [f_rbm]
+    feature['hog'] = [f_hog]
+    feature['lbp'] = [f_lbp]
+    feature['lbp_hog'] = [f_lbp_hog]
+
+    return feature
 
 
 def feature_combine(features, name_feature1, name_feature2, ith):

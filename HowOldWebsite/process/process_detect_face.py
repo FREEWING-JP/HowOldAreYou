@@ -8,11 +8,12 @@ import dlib
 import skimage.io
 import skimage.transform
 
-from HowOldWebsite.kernel import get_feature_extractor
+from HowOldWebsite.kernel import feature_extract_all
 from HowOldWebsite.models import RecordFace
-from HowOldWebsite.utils import do_rgb2gray
+from HowOldWebsite.utils import do_collect_feature
 
 __author__ = 'Hao Yu'
+
 
 def face_detect(database_original_image, image):
     try:
@@ -95,35 +96,11 @@ def __do_save_face(database_original_image, image, faces):
 
 def __do_feature_extract(image_faces):
     # The result array
-    features = {
-        'landmark': [],
-        'rbm': [],
-        'hog': [],
-        'lbp': [],
-        'lbp_hog': [],
-    }
-
-    # Get the extractors
-    extractor_landmark = get_feature_extractor('LANDMARK')
-    extractor_rbm = get_feature_extractor('RBM')
-    extractor_hog = get_feature_extractor('HOG')
-    extractor_lbp = get_feature_extractor('LBP')
-    extractor_lbp_hog = get_feature_extractor('LBP_HOG')
+    features = {}
 
     # For each face, extract the feature
     for face in image_faces:
-        face_gray = do_rgb2gray(face)
-        f_landmark = extractor_landmark(face_gray)
-        f_rbm = extractor_rbm(face)
-        f_hog = extractor_hog(face_gray)
-        f_lbp = extractor_lbp(face_gray)
-        f_lbp_hog = extractor_lbp_hog(face_gray)
-
-        # Save the features
-        features['landmark'].append(f_landmark)
-        features['rbm'].append(f_rbm)
-        features['hog'].append(f_hog)
-        features['lbp'].append(f_lbp)
-        features['lbp_hog'].append(f_lbp_hog)
+        feature_single = feature_extract_all(face)
+        features = do_collect_feature(features, feature_single)
 
     return features

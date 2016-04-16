@@ -6,10 +6,10 @@ import threading
 import django.conf
 import numpy as np
 
-from HowOldWebsite.kernel import get_feature_extractor
+from HowOldWebsite.kernel import feature_extract_all
 from HowOldWebsite.models import RecordFace
+from HowOldWebsite.utils import do_collect_feature
 from HowOldWebsite.utils import do_imread
-from HowOldWebsite.utils import do_rgb2gray
 from .trainer_age import TrainerAge
 from .trainer_sex import TrainerSex
 from .trainer_smile import TrainerSmile
@@ -58,23 +58,10 @@ class Trainer:
                     raise Exception()
 
             # The result array
-            features = {
-                'landmark': [],
-                'rbm': [],
-                'hog': [],
-                'lbp': [],
-                'lbp_hog': [],
-            }
+            features = {}
             target_sex = []
             target_age = []
             target_smile = []
-
-            # Get the feature extractors
-            extractor_landmark = get_feature_extractor('LANDMARK')
-            extractor_rbm = get_feature_extractor('RBM')
-            extractor_hog = get_feature_extractor('HOG')
-            extractor_lbp = get_feature_extractor('LBP')
-            extractor_lbp_hog = get_feature_extractor('LBP_HOG')
 
             # Extract feature
             for face in faces:
@@ -84,21 +71,13 @@ class Trainer:
                 face_filename_color = os.path.join(SAVE_DIR['FACE'], str(face_id) + '.jpg')
                 # face_filename_gray = os.path.join(SAVE_DIR['FACE_GRAY'], str(face_id) + '.jpg')
                 cv_face_image = do_imread(face_filename_color)
-                face_gray = do_rgb2gray(cv_face_image)
+                # face_gray = do_rgb2gray(cv_face_image)
 
                 # Get features
-                f_landmark = extractor_landmark(face_gray)
-                f_rbm = extractor_rbm(cv_face_image)
-                f_hog = extractor_hog(face_gray)
-                f_lbp = extractor_lbp(face_gray)
-                f_lbp_hog = extractor_lbp_hog(face_gray)
+                feature_single = feature_extract_all(cv_face_image)
 
                 # Save features
-                features['landmark'].append(f_landmark)
-                features['rbm'].append(f_rbm)
-                features['hog'].append(f_hog)
-                features['lbp'].append(f_lbp)
-                features['lbp_hog'].append(f_lbp_hog)
+                features = do_collect_feature(features, feature_single)
 
                 # Get targets
                 t_sex = (face.recordsex_set.first()).sex_user

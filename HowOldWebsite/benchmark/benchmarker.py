@@ -34,15 +34,10 @@ class Benchmarker:
                     mat_name = os.path.join(self.__data_mat_file_path, pic_name + '.pkl')
                     # feature_all = scipy.io.loadmat(mat_name)
                     image_info = joblib.load(mat_name)
-                    if model_name == 'sex':
-                        features.append(named_feature_combine(image_info['feature'], combine_name='sex', ith=0))
-                        targets.append(image_info['sex'])
-                    elif model_name == 'age':
-                        features.append(named_feature_combine(image_info['feature'], combine_name='age', ith=0))
-                        targets.append(image_info['age'])
-                    elif model_name == 'smile':
-                        features.append(named_feature_combine(image_info['feature'], combine_name='smile', ith=0))
-                        targets.append(image_info['smile'])
+
+                    features.append(named_feature_combine(image_info['feature'], combine_name=model_name, ith=0))
+                    targets.append(image_info[model_name])
+
                 except Exception as e:
                     # print(e)
                     pass

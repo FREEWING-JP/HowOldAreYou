@@ -167,7 +167,7 @@ def train(request):
 
     if "GET" == request.method:
         for mod in model_names:
-            if request.POST.get(mod, '') in [True, "true", 1]:
+            if request.GET.get(mod, '') in [True, "true", 1]:
                 train_models.append(mod)
 
     success = Trainer.train(train_models)

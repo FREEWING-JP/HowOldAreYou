@@ -37,3 +37,13 @@ def do_message_maker(success=True, message=None, tip=None):
                        'message': message,
                        'tip': tip
                        })
+
+
+def do_collect_feature(feature_jar, feature_single):
+    for key in feature_single.keys():
+        if key not in feature_jar.keys():
+            feature_jar[key] = []
+
+        feature_jar[key].append(feature_single[key][0])
+
+    return feature_jar

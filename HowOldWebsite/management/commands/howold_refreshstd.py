@@ -7,9 +7,8 @@ import django.conf
 from django.core.management.base import BaseCommand
 from sklearn.externals import joblib
 
-from HowOldWebsite.kernel import get_feature_extractor
+from HowOldWebsite.kernel import feature_extract_all
 from HowOldWebsite.utils import do_imread
-from HowOldWebsite.utils import do_rgb2gray
 
 __author__ = 'Hao Yu'
 
@@ -34,43 +33,24 @@ class Command(BaseCommand):
         # Load the description file
         description_file = joblib.load(description_file_path)
 
-        # Load the extractors
-        extractor_landmark = get_feature_extractor('LANDMARK')
-        extractor_rbm = get_feature_extractor('RBM')
-        extractor_hog = get_feature_extractor('HOG')
-        extractor_lbp = get_feature_extractor('LBP')
-        extractor_lbp_hog = get_feature_extractor('LBP_HOG')
-
         # The counter
         success_counter = 0
         # Read each image, extra features and save
         for item in description_file:
             try:
                 # Ready
-                feature = {}
                 image_filename = item[0]
                 image_path = os.path.join(face_file_path, image_filename)
                 image_feature_path = os.path.join(mat_file_path, image_filename + '.pkl')
 
                 # Go
                 cv_face_image = do_imread(image_path)
-                face_gray = do_rgb2gray(cv_face_image)
+                # face_gray = do_rgb2gray(cv_face_image)
 
-                # Get features
-                f_landmark = extractor_landmark(face_gray)
-                f_rbm = extractor_rbm(cv_face_image)
-                f_hog = extractor_hog(face_gray)
-                f_lbp = extractor_lbp(face_gray)
-                f_lbp_hog = extractor_lbp_hog(face_gray)
-
-                # Save features
-                feature['landmark'] = [f_landmark]
-                feature['rbm'] = [f_rbm]
-                feature['hog'] = [f_hog]
-                feature['lbp'] = [f_lbp]
-                feature['lbp_hog'] = [f_lbp_hog]
                 image_info = {}
+                feature = feature_extract_all(cv_face_image)
                 image_info["feature"] = feature
+
                 if 'Male' == item[3]:
                     image_info["sex"] = 1
                 else:
