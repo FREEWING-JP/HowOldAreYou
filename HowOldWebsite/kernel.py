@@ -34,17 +34,21 @@ __doer = {
 }
 
 
-def __do_lbp_hog(image_gray, P=8, R=180,
-                 pixels_per_cell=(16, 16), cells_per_block=(1, 1)):
-    feature_lbp = skimage.feature.local_binary_pattern(image_gray, P, R)
+def __do_lbp_hog(image_gray, P=8, R=1,
+                 pixels_per_cell=(32, 32), cells_per_block=(2, 2)):
+    feature_lbp = skimage.feature.local_binary_pattern(image_gray,
+                                                       P=P, R=R,
+                                                       method='nri_uniform')
     feature_lbp_hog = skimage.feature.hog(feature_lbp,
                                           pixels_per_cell=pixels_per_cell,
                                           cells_per_block=cells_per_block)
     return feature_lbp_hog.ravel()
 
 
-def __do_lbp(image_gray, P=8, R=180):
-    feature = skimage.feature.local_binary_pattern(image_gray, P=P, R=R)
+def __do_lbp(image_gray, P=8, R=1):
+    feature = skimage.feature.local_binary_pattern(image_gray,
+                                                   P=P, R=R,
+                                                   method='nri_uniform')
     return feature.ravel()
 
 
@@ -61,7 +65,7 @@ def __do_landmark(image_gray):
     return np.array(feature).ravel()
 
 
-def __do_hog(image_gray, pixels_per_cell=(16, 16), cells_per_block=(1, 1)):
+def __do_hog(image_gray, pixels_per_cell=(32, 32), cells_per_block=(2, 2)):
     feature = skimage.feature.hog(image_gray,
                                   pixels_per_cell=pixels_per_cell,
                                   cells_per_block=cells_per_block)
@@ -137,9 +141,9 @@ def named_feature_combine(features, combine_name, ith):
     if 'sex' == combine_name:
         return feature_combine(features, 'hog', 'lbp_hog', ith)
     elif 'age' == combine_name:
-        return feature_combine(features, 'lbp_hog', 'rbm', ith)
+        return feature_combine(features, 'lbp', 'rbm', ith)
     elif 'smile' == combine_name:
-        return feature_combine(features, 'lbp_hog', 'landmark', ith)
+        return feature_combine(features, 'lbp', 'landmark', ith)
     return None
 
 
