@@ -131,6 +131,15 @@
                             <span>Training Log</span>
                         </a>
                     </li>
+
+                    <li class="header">TRAIN MODEL</li>
+                    <li>
+                        <a href="#" id="do_train_model_button">
+                            <i class="fa fa-circle-o text-red"></i>
+                            <span>Train Model Now</span>
+                        </a>
+                    </li>
+
                     <li class="header">PERSONAL</li>
 
                     {% if user.has_usable_password %}
@@ -276,6 +285,33 @@
     <script src="{% static "frameworks/AdminLTE/js/demo.js" %}"></script>
 {% endblock %}
 {% block footer_js_after %}
+    <script>
+        $(function () {
+            $('#do_train_model_button').on('click', function () {
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'train' %}",
+                    data: {
+                        "sex": true,
+                        "age": true,
+                        "smile": true
+                    },
+                    success: function (result, status, xhr) {
+                        var data = JSON.parse(result);
+                        if (data.success == true) {
+                            alert("Success!\nThe model is training!");
+                        } else {
+                            alert("Fail!\nThe previous training has not finished yet!");
+                        }
+
+                    },
+                    error: function (xhr, info, e) {
+                        alert("Fail!");
+                    }
+                });
+            })
+        });
+    </script>
 {% endblock %}
 </body>
 </html>
