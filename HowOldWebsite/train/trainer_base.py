@@ -31,8 +31,11 @@ class TrainerBase:
                                       combine_name=self.model_name,
                                       ith=ith))
         feature = np.array(feature)
+
         # Train
+        self.model.set_params(verbose=1)
         self.model.fit(feature, target.ravel())
+        self.model.set_params(verbose=0)
 
     def do_run_benchmark(self):
         bm = Benchmarker()

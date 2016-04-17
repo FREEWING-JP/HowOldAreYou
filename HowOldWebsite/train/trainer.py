@@ -42,9 +42,6 @@ class Trainer:
     @classmethod
     def __train_main(cls, model_names):
         SAVE_DIR = django.conf.settings.SAVE_DIR
-        if_train_sex = False
-        if_train_age = False
-        if_train_smile = False
 
         print("=" * 10 + " Train Start " + "=" * 10)
 
@@ -59,9 +56,18 @@ class Trainer:
 
             # The result array
             features = {}
-            target_sex = []
-            target_age = []
-            target_smile = []
+            targets = {}
+            threads = {}
+            for m in model_names:
+                features[m] = []
+                targets[m] = []
+                threads[m] = None
+
+            trainers = {
+                'sex': Trainer.__do_thread_train_sex,
+                'age': Trainer.__do_thread_train_age,
+                'smile': Trainer.__do_thread_train_smile,
+            }
 
             # Extract feature
             for face in faces:
@@ -80,41 +86,29 @@ class Trainer:
                 features = do_collect_feature(features, feature_single)
 
                 # Get targets
-                t_sex = (face.recordsex_set.first()).sex_user
-                t_age = (face.recordage_set.first()).age_user
-                t_smile = (face.recordsmile_set.first()).smile_user
-                target_sex.append(t_sex)
-                target_age.append(t_age)
-                target_smile.append(t_smile)
+                t = {}
+                t['sex'] = (face.recordsex_set.first()).sex_user
+                t['age'] = (face.recordage_set.first()).age_user
+                t['smile'] = (face.recordsmile_set.first()).smile_user
+                for m in model_names:
+                    targets[m].append(t[m])
+                    # targets['sex'].append(t_sex)
+                    # targets['age'].append(t_age)
+                    # targets['smile'].append(t_smile)
 
-            target_sex = np.array(target_sex)
-            target_age = np.array(target_age)
-            target_smile = np.array(target_smile)
+            for m in model_names:
+                targets[m] = np.array(targets[m])
+                # targets['sex'] = np.array(targets['sex'])
+                # targets['age'] = np.array(targets['age'])
+                # targets['smile'] = np.array(targets['smile'])
 
             # Train
-            if 'sex' in model_names:
-                try:
-                    worker = TrainerSex()
-                    worker.train(n_faces, features, target_sex)
-                except Exception as e:
-                    # print(e)
-                    pass
-
-            if 'age' in model_names:
-                try:
-                    worker = TrainerAge()
-                    worker.train(n_faces, features, target_age)
-                except Exception as e:
-                    # print(e)
-                    pass
-
-            if 'smile' in model_names:
-                try:
-                    worker = TrainerSmile()
-                    worker.train(n_faces, features, target_smile)
-                except Exception as e:
-                    # print(e)
-                    pass
+            for m in model_names:
+                threads[m] = threading.Thread(target=trainers[m],
+                                              args=(n_faces, features, targets[m]))
+                threads[m].start()
+            for m in model_names:
+                threads[m].join()
 
             # Change the used flag
             if not django.conf.settings.DEBUG:
@@ -129,3 +123,36 @@ class Trainer:
 
         # Set the busy flag
         Trainer.__busy = False
+
+    @classmethod
+    def __do_thread_train_sex(cls, n_faces, features, target):
+        print("Sex Start")
+        try:
+            worker = TrainerSex()
+            worker.train(n_faces, features, target)
+        except Exception as e:
+            print(e)
+            pass
+        print("Sex OK")
+
+    @classmethod
+    def __do_thread_train_age(cls, n_faces, features, target):
+        print("Age Start")
+        try:
+            worker = TrainerAge()
+            worker.train(n_faces, features, target)
+        except Exception as e:
+            print(e)
+            pass
+        print("Age OK")
+
+    @classmethod
+    def __do_thread_train_smile(cls, n_faces, features, target):
+        print("Smile Start")
+        try:
+            worker = TrainerSmile()
+            worker.train(n_faces, features, target)
+        except Exception as e:
+            print(e)
+            pass
+        print("Smile OK")
