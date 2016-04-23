@@ -8,6 +8,7 @@ from django.shortcuts import render
 
 from HowOldWebsite.process.process_estimate_smile import smile_estimate
 from HowOldWebsite.train.trainer import Trainer
+from HowOldWebsite.utils.api import do_message_maker
 from .models import RecordFace
 from .models import RecordOriginalImage
 from .process.process_detect_face import face_detect
@@ -15,7 +16,6 @@ from .process.process_estimate_age import age_estimate
 from .process.process_estimate_sex import sex_estimate
 from .process.process_fetch_image import image_fetch
 from .process.process_result_arrange import result_arrange
-from .utils import do_message_maker
 
 __author__ = 'Hao Yu'
 

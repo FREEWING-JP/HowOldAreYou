@@ -6,10 +6,10 @@ import threading
 import django.conf
 import numpy as np
 
+from HowOldWebsite.kernel.feature import do_collect_feature
 from HowOldWebsite.kernel.feature import feature_extract_all
 from HowOldWebsite.models import RecordFace
-from HowOldWebsite.utils import do_collect_feature
-from HowOldWebsite.utils import do_imread
+from HowOldWebsite.utils.image import do_imread
 from .trainer_age import TrainerAge
 from .trainer_sex import TrainerSex
 from .trainer_smile import TrainerSmile

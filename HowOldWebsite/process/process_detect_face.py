@@ -8,9 +8,9 @@ import dlib
 import skimage.io
 import skimage.transform
 
+from HowOldWebsite.kernel.feature import do_collect_feature
 from HowOldWebsite.kernel.feature import feature_extract_all
 from HowOldWebsite.models import RecordFace
-from HowOldWebsite.utils import do_collect_feature
 
 __author__ = 'Hao Yu'
 

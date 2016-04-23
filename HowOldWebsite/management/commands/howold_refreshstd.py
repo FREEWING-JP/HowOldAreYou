@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from sklearn.externals import joblib
 
 from HowOldWebsite.kernel.feature import feature_extract_all
-from HowOldWebsite.utils import do_imread
+from HowOldWebsite.utils.image import do_imread
 
 __author__ = 'Hao Yu'
 

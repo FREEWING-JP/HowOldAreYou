@@ -8,7 +8,7 @@ import numpy as np
 import skimage.feature
 from sklearn.externals import joblib
 
-from HowOldWebsite.utils import do_rgb2gray
+from HowOldWebsite.utils.image import do_rgb2gray
 
 __author__ = 'Hao Yu'
 
@@ -142,3 +142,13 @@ def named_feature_combine(features, combine_name, ith):
     elif 'smile' == combine_name:
         return feature_combine(features, 'lbp', 'landmark', ith)
     return None
+
+
+def do_collect_feature(feature_jar, feature_single):
+    for key in feature_single.keys():
+        if key not in feature_jar.keys():
+            feature_jar[key] = []
+
+        feature_jar[key].append(feature_single[key][0])
+
+    return feature_jar

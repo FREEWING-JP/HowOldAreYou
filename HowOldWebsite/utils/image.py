@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-import json
-
 import cv2
 import skimage
 import skimage.color
@@ -30,20 +28,3 @@ def do_imread(path):
 
 def do_imread_cv(path):
     return cv2.imread(fname=path)
-
-
-def do_message_maker(success=True, message=None, tip=None):
-    return json.dumps({'success': success,
-                       'message': message,
-                       'tip': tip
-                       })
-
-
-def do_collect_feature(feature_jar, feature_single):
-    for key in feature_single.keys():
-        if key not in feature_jar.keys():
-            feature_jar[key] = []
-
-        feature_jar[key].append(feature_single[key][0])
-
-    return feature_jar
