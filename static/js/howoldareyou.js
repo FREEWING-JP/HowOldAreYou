@@ -133,8 +133,8 @@ $(function () {
     Dropzone.options.howOldDropZone = {
         url: $CONFIG['fisher'],
         uploadMultiple: false, // Only accept one file
-        maxFilesize: 1, // in MB
-        filesizeBase: 1000,
+        maxFilesize: 3, // in MB
+        filesizeBase: 1024,
         dictDefaultMessage: '<h1><span class="glyphicon glyphicon-picture"></span>' +
         '<br /><small>~ Drop Your Photo Here ~</small></h1>',
         acceptedFiles: "image/jpeg", // MIME type. JPG only
