@@ -6,7 +6,7 @@ import django.conf
 import numpy as np
 from sklearn.externals import joblib
 
-from HowOldWebsite.kernel import named_feature_combine
+from HowOldWebsite.kernel.feature import named_feature_combine
 
 __author__ = 'Hao Yu'
 

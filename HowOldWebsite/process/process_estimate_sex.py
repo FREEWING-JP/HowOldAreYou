@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-from HowOldWebsite.kernel import get_predictor
-from HowOldWebsite.kernel import named_feature_combine
+from HowOldWebsite.kernel.feature import named_feature_combine
+from HowOldWebsite.kernel.predictor import get_predictor
 from HowOldWebsite.models import RecordSex
 
 __author__ = 'Hao Yu'

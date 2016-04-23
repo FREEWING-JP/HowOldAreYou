@@ -3,7 +3,7 @@
 import numpy as np
 
 from HowOldWebsite.benchmark.benchmarker import Benchmarker
-from HowOldWebsite.kernel import named_feature_combine
+from HowOldWebsite.kernel.feature import named_feature_combine
 
 __author__ = 'Hao Yu'
 

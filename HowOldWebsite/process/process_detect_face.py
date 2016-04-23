@@ -8,7 +8,7 @@ import dlib
 import skimage.io
 import skimage.transform
 
-from HowOldWebsite.kernel import feature_extract_all
+from HowOldWebsite.kernel.feature import feature_extract_all
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils import do_collect_feature
 

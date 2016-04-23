@@ -7,7 +7,7 @@ import uuid
 import django.conf
 from sklearn.externals import joblib
 
-from HowOldWebsite.kernel import get_predictor
+from HowOldWebsite.kernel.predictor import get_predictor
 from HowOldWebsite.models import ModelSmile
 from .trainer_base import TrainerBase
 

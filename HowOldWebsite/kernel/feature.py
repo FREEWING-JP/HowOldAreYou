@@ -8,9 +8,6 @@ import numpy as np
 import skimage.feature
 from sklearn.externals import joblib
 
-from HowOldWebsite.models import ModelAge
-from HowOldWebsite.models import ModelSex
-from HowOldWebsite.models import ModelSmile
 from HowOldWebsite.utils import do_rgb2gray
 
 __author__ = 'Hao Yu'
@@ -145,51 +142,3 @@ def named_feature_combine(features, combine_name, ith):
     elif 'smile' == combine_name:
         return feature_combine(features, 'lbp', 'landmark', ith)
     return None
-
-
-# The predictors
-
-__map_predictor = {
-    'SEX': None,
-    'AGE': None,
-    'SMILE': None,
-}
-
-
-def get_predictor(name):
-    name = name.upper()
-    try:
-        if __map_predictor[name] is None:
-            load_predictor(name)
-        return __map_predictor[name]
-    except Exception as e:
-        # print(e)
-        return None
-
-
-def load_predictor(model_name, model_id=None):
-    '''
-    If the id is not specified, we will find the model which is bing used or the
-    newest, and read the id. Then we will load `/model/model_NAME/ID/NAME.pkl`.
-    The default model will be load if there is no model on using.
-    '''
-    __model_classes = {
-        'sex': ModelSex,
-        'age': ModelAge,
-        'smile': ModelSmile,
-    }
-    try:
-        if model_id is None:
-            model_class = __model_classes[model_name.lower()]
-            model_obj = model_class.objects.filter(used_flag=1).order_by('-gen_time').first()
-            if model_obj is None:
-                model_id = 'default'
-            else:
-                model_id = model_obj.id
-
-        # Load the model
-        path = os.path.join(__paths['MODEL_' + model_name.upper()], str(model_id), model_name.lower() + '.pkl')
-        __map_predictor[model_name] = joblib.load(path)
-    except Exception as e:
-        # print(e)
-        pass

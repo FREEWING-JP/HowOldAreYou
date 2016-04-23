@@ -6,7 +6,7 @@ import threading
 import django.conf
 import numpy as np
 
-from HowOldWebsite.kernel import feature_extract_all
+from HowOldWebsite.kernel.feature import feature_extract_all
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils import do_collect_feature
 from HowOldWebsite.utils import do_imread
