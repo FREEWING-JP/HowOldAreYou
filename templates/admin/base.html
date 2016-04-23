@@ -223,29 +223,33 @@
             </section>
         {% endif %}
         <!-- Main content -->
-        <section class="content {% block coltype %}colM{% endblock %}">
-
-            {% block content %}
-                {% block object-tools %}{% endblock %}
-                {{ content }}
-            {% endblock %}
-            {% block sidebar %}{% endblock %}
-
+        {#        <section class="content {% block coltype %}colM{% endblock %}">#}
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-9">
+                    {% block content %}
+                        {% block object-tools %}{% endblock %}
+                        {{ content }}
+                    {% endblock %}
+                </div>
+                <div class="col-sm-3">
+                    {% block sidebar %}{% endblock %}
+                </div>
+            </div>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
-    <footer class="main-footer navbar navbar-default navbar-fixed-bottom">
-        <p class="navbar-text navbar-right">
+    <footer class="main-footer">
+        <div class="pull-right">
             <b>Version</b> {% now "Y" %}
-        </p>
+        </div>
 
-        <p class="navbar-text">
-            <strong>
-                Copyright &copy; 2012-{% now "Y" %}
-                <a href="http://haoyu.love">Hao Yu</a>.
-            </strong>
-            All rights reserved.
-        </p>
+        <strong>
+            Copyright &copy; 2012-{% now "Y" %}
+            <a href="http://haoyu.love">Hao Yu</a>.
+        </strong>
+        All rights reserved.
+   
     </footer>
 </div><!-- ./wrapper -->
 
