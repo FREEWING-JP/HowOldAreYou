@@ -8,7 +8,7 @@ from HowOldWebsite.kernel.feature import named_feature_combine
 __author__ = 'Hao Yu'
 
 
-class TrainerBase:
+class BaseTrainer:
     def __init__(self):
         self.model_name = None
         self.model_id = None

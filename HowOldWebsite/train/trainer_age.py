@@ -9,14 +9,14 @@ from sklearn.externals import joblib
 
 from HowOldWebsite.kernel.predictor import get_predictor
 from HowOldWebsite.models import ModelAge
-from .trainer_base import TrainerBase
+from .base_trainer import BaseTrainer
 
 __author__ = 'Hao Yu'
 
 
-class TrainerAge(TrainerBase):
+class TrainerAge(BaseTrainer):
     def __init__(self):
-        TrainerBase.__init__(self)
+        BaseTrainer.__init__(self)
         self.model_name = 'age'
         self.model_id = uuid.uuid4()
         self.model_path = os.path.join(django.conf.settings.SAVE_DIR['MODEL'],
