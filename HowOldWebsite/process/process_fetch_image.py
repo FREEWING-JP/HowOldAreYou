@@ -107,6 +107,6 @@ def __do_save_original_image_to_database(pic_id, size_picture, request, method, 
 
 def __do_image_process(image):
     # Hist equalize(but the result is not good)
-    image = skimage.exposure.equalize_hist(image)
+    # image = skimage.exposure.equalize_hist(image)
     image = skimage.img_as_ubyte(image)
     return image
