@@ -15,7 +15,9 @@ class BaseFeature:
     @classmethod
     def extract_all(cls, picture_jar=None, params=default_param):
         result = []
+        if params is None:
+            params = cls.default_param
         for pic in picture_jar[cls.layer]:
             tmp_result = cls.extract(picture=pic, params=params)
-            result.append([tmp_result])
+            result.append(tmp_result)
         return result
