@@ -94,7 +94,6 @@ class BaseEstimator:
         """
             Load estimator for class
         """
-        object_model = None
         if (cls.object_model is None) or force:
             cls.object_model = cls.estimator_get(model_id=model_id)
         return cls.object_model
@@ -118,7 +117,7 @@ class BaseEstimator:
                                 'model_' + estimator_name,
                                 str(model_id),
                                 estimator_name + '.pkl')
-            predictor = joblib.load(path)
+            estimator = joblib.load(path)
         except Exception as e:
             # print(e)
             pass
