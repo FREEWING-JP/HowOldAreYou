@@ -7,17 +7,21 @@ from HowOldWebsite.models import RecordSex
 __author__ = 'Hao Yu'
 
 
-def sex_estimate(database_face_array, feature_extracted_array):
+def sex_estimate(database_face_array, feature_jar):
+    success = False
+    database_record = None
+
     try:
         n_faces = len(database_face_array)
-        result_sex_estimated = __do_estimate(feature_extracted_array, n_faces)
-        database_sex_result = \
-            __do_save_sex_to_database_all(database_face_array,
-                                          result_sex_estimated)
-        return True, database_sex_result
+        result_estimated = __do_estimate(feature_jar, n_faces)
+        database_record = \
+            __do_save_to_database(database_face_array, result_estimated)
+        success = True
     except Exception as e:
         # print(e)
-        return False, None
+        pass
+
+    return success, database_record
 
 
 def __do_estimate(feature_jar, n_faces):
@@ -27,16 +31,10 @@ def __do_estimate(feature_jar, n_faces):
     return result
 
 
-def __do_save_sex_to_database_all(database_face, sex):
-    database_sex = []
+def __do_save_to_database(database_face, sex):
+    database_record = []
     for ith in range(len(database_face)):
-        record = __do_save_sex_to_database(database_face[ith], sex[ith])
-        database_sex.append(record)
-    return database_sex
-
-
-def __do_save_sex_to_database(face_record, sex_predict):
-    database_record_sex = RecordSex(original_face=face_record,
-                                    value_predict=sex_predict)
-    database_record_sex.save()
-    return database_record_sex
+        record = RecordSex(original_face=database_face[ith],
+                           value_predict=sex[ith])
+        database_record.append(record)
+    return database_record

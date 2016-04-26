@@ -100,7 +100,7 @@ def __do_save_original_image_to_database(pic_id, size_picture, request, method, 
                             size_y=size_picture[0],
                             size_scale=size_scale
                             )
-    database_original_image.save()
+    # database_original_image.save()
 
     return database_original_image
 

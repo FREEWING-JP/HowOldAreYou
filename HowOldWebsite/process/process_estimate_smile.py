@@ -7,17 +7,21 @@ from HowOldWebsite.models import RecordSmile
 __author__ = 'Hao Yu'
 
 
-def smile_estimate(database_face_array, feature_extracted_array):
+def smile_estimate(database_face_array, feature_jar):
+    success = False
+    database_record = None
+
     try:
         n_faces = len(database_face_array)
-        result_smile_estimated = __do_estimate(feature_extracted_array, n_faces)
-        database_smile_result = \
-            __do_save_smile_to_database_all(database_face_array,
-                                            result_smile_estimated)
-        return True, database_smile_result
+        result_estimated = __do_estimate(feature_jar, n_faces)
+        database_record = \
+            __do_save_to_database(database_face_array, result_estimated)
+        success = True
     except Exception as e:
         # print(e)
-        return False, None
+        pass
+
+    return success, database_record
 
 
 def __do_estimate(feature_jar, n_faces):
@@ -27,16 +31,10 @@ def __do_estimate(feature_jar, n_faces):
     return result
 
 
-def __do_save_smile_to_database_all(database_face, smile):
-    database_smile = []
+def __do_save_to_database(database_face, smile):
+    database_record = []
     for ith in range(len(database_face)):
-        record = __do_save_smile_to_database(database_face[ith], smile[ith])
-        database_smile.append(record)
-    return database_smile
-
-
-def __do_save_smile_to_database(face_record, smile_predict):
-    database_record_smile = RecordSmile(original_face=face_record,
-                                        value_predict=smile_predict)
-    database_record_smile.save()
-    return database_record_smile
+        record = RecordSmile(original_face=database_face[ith],
+                             value_predict=smile[ith])
+        database_record.append(record)
+    return database_record

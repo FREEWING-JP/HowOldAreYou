@@ -16,20 +16,26 @@ __author__ = 'Hao Yu'
 
 
 def face_detect(database_original_image, image):
-    try:
-        # Change rgb image to gray image
-        # cv_image_gray = do_rgb2gray(image)
+    success = False
+    database_record = None
+    feature_extracted = None
 
+    try:
         # Face detection
         faces = __do_detect(image)
 
         # Save the faces
-        database_face_detected, feature_extracted = \
-            __do_save_faces_and_extract_feature(database_original_image, image, faces)
-        return True, database_face_detected, feature_extracted
+        database_record, face_jar = \
+            __do_save_face(database_original_image, image, faces)
+
+        # Extract feature
+        feature_extracted = __do_feature_extract(face_jar)
+        success = True
     except Exception as e:
         # print(e)
-        return False, None, None
+        pass
+
+    return success, database_record, feature_extracted
 
 
 def __do_detect(image):
@@ -38,13 +44,6 @@ def __do_detect(image):
     # Detect it!
     faces_detected = detector(image, 1)
     return faces_detected
-
-
-def __do_save_faces_and_extract_feature(database_original_image, image, faces):
-    database_face_detected, face_jar = \
-        __do_save_face(database_original_image, image, faces)
-    feature_extracted = __do_feature_extract(face_jar)
-    return database_face_detected, feature_extracted
 
 
 def __do_save_face(database_original_image, image, faces):
@@ -85,7 +84,7 @@ def __do_save_face(database_original_image, image, faces):
                                               location_bottom=face.bottom())
 
             # Save to database
-            database_record_face.save()
+            # database_record_face.save()
 
             # Append to record
             face_jar['rgb'].append(cv_face_image)
@@ -100,8 +99,8 @@ def __do_save_face(database_original_image, image, faces):
 
 def __do_feature_extract(image_faces):
     # The result array
+    features = {}
     try:
-        features = {}
         for fe in ['lbp', 'hog', 'lbp_hog', 'landmark', 'rbm']:
             features[fe] = FeatureUtil.extract_all(fe, image_faces)
     except Exception as e:

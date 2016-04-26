@@ -7,17 +7,21 @@ from HowOldWebsite.models import RecordAge
 __author__ = 'Hao Yu'
 
 
-def age_estimate(database_face_array, database_age_array, feature_extracted_array):
+def age_estimate(database_face_array, feature_jar):
+    success = False
+    database_record = None
+
     try:
         n_faces = len(database_face_array)
-        result_age_estimated = __do_estimate(feature_extracted_array, n_faces)
-        database_age_result = \
-            __do_save_age_to_database_all(database_face_array, result_age_estimated)
-
-        return True, database_age_result
+        result_estimated = __do_estimate(feature_jar, n_faces)
+        database_record = \
+            __do_save_to_database(database_face_array, result_estimated)
+        success = True
     except Exception as e:
         # print(e)
-        return False, None
+        pass
+
+    return success, database_record
 
 
 def __do_estimate(feature_jar, n_faces):
@@ -27,16 +31,10 @@ def __do_estimate(feature_jar, n_faces):
     return result
 
 
-def __do_save_age_to_database_all(database_face, age):
-    database_age = []
+def __do_save_to_database(database_face, age):
+    database_record = []
     for ith in range(len(database_face)):
-        record = __do_save_sex_to_database(database_face[ith], age[ith])
-        database_age.append(record)
-    return database_age
-
-
-def __do_save_sex_to_database(face_record, sex_predict):
-    database_record_age = RecordAge(original_face=face_record,
-                                    value_predict=sex_predict)
-    database_record_age.save()
-    return database_record_age
+        record = RecordAge(original_face=database_face[ith],
+                           value_predict=age[ith])
+        database_record.append(record)
+    return database_record
