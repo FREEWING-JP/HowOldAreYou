@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-from HowOldWebsite.kernel.feature import named_feature_combine
-from HowOldWebsite.kernel.predictor import get_predictor
+
+from HowOldWebsite.estimators.estimator_age import EstimatorAge
 from HowOldWebsite.models import RecordAge
 
 __author__ = 'Hao Yu'
@@ -21,12 +21,9 @@ def age_estimate(database_face_array, database_age_array, feature_extracted_arra
 
 
 def __do_estimate(feature_jar, n_faces):
-    feature_for_age = []
-    for ith in range(n_faces):
-        feature_for_age.append(
-            named_feature_combine(feature_jar, combine_name='age', ith=ith))
-    sex_predictor = get_predictor('AGE')
-    result = sex_predictor.predict(feature_for_age)
+    feature = EstimatorAge.feature_combine(feature_jar)
+    feature = EstimatorAge.feature_reduce(feature)
+    result = EstimatorAge.estimate(feature)
     return result
 
 

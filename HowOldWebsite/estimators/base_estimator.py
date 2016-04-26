@@ -27,7 +27,7 @@ class BaseEstimator:
     def get_estimator_name(cls):
         # name = cls.__class__.__name__
         name = cls.__name__
-        name.replace('Estimator', '')
+        name = name.replace('Estimator', '')
         name = name.lower()
         return name
 

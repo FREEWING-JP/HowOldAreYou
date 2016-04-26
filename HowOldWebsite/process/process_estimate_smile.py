@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-from HowOldWebsite.kernel.feature import named_feature_combine
-from HowOldWebsite.kernel.predictor import get_predictor
+
+from HowOldWebsite.estimators.estimator_smile import EstimatorSmile
 from HowOldWebsite.models import RecordSmile
 
 __author__ = 'Hao Yu'
@@ -21,12 +21,9 @@ def smile_estimate(database_face_array, feature_extracted_array):
 
 
 def __do_estimate(feature_jar, n_faces):
-    feature_for_smile = []
-    for ith in range(n_faces):
-        feature_for_smile.append(
-            named_feature_combine(feature_jar, combine_name='smile', ith=ith))
-    smile_predictor = get_predictor('SMILE')
-    result = smile_predictor.predict(feature_for_smile)
+    feature = EstimatorSmile.feature_combine(feature_jar)
+    feature = EstimatorSmile.feature_reduce(feature)
+    result = EstimatorSmile.estimate(feature)
     return result
 
 
