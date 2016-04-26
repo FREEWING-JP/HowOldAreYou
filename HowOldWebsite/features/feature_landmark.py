@@ -18,6 +18,7 @@ class FeatureLandmark(BaseFeature):
                      'face_landmark.dat')
     )
     default_param = None
+    layer = 'gray'
 
     box = dlib.rectangle(left=0, top=0, right=255, bottom=255)
 

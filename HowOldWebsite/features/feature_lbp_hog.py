@@ -18,6 +18,7 @@ class FeatureLbpHog(BaseFeature):
         'pixels_per_cell': (32, 32),
         'cells_per_block': (2, 2),
     }
+    layer = 'gray'
 
     @classmethod
     def extract(cls, picture=None, params=default_param):

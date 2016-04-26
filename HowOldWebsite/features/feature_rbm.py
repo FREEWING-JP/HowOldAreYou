@@ -18,6 +18,7 @@ class FeatureRbm(BaseFeature):
     )
 
     default_param = None
+    layer = 'rgb'
 
     @classmethod
     def extract(cls, picture=None, params=default_param):

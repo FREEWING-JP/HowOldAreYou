@@ -16,6 +16,7 @@ class FeatureLbp(BaseFeature):
         'R': 1,
         'method': 'nri_uniform',
     }
+    layer = 'gray'
 
     @classmethod
     def extract(cls, picture=None, params=default_param):
