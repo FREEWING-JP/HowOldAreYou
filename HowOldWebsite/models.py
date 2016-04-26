@@ -47,8 +47,8 @@ class RecordSex(models.Model):
     # The sexs of the faces detected
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    sex_predict = models.IntegerField(choices=RecordSexFlag, default=0)
-    sex_user = models.IntegerField(choices=RecordSexFlag, blank=True, default=-1)
+    value_predict = models.IntegerField(choices=RecordSexFlag, default=0)
+    value_user = models.IntegerField(choices=RecordSexFlag, blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
@@ -56,8 +56,8 @@ class RecordAge(models.Model):
     # The ages of the faces detected
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    age_predict = models.IntegerField(default=0)
-    age_user = models.IntegerField(blank=True, default=-1)
+    value_predict = models.IntegerField(default=0)
+    value_user = models.IntegerField(blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 
@@ -65,8 +65,8 @@ class RecordSmile(models.Model):
     # The smile degrees of the faces detected
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     original_face = models.ForeignKey(RecordFace, on_delete=models.CASCADE)
-    smile_predict = models.IntegerField(default=0)
-    smile_user = models.IntegerField(blank=True, default=-1)
+    value_predict = models.IntegerField(default=0)
+    value_user = models.IntegerField(blank=True, default=-1)
     used_flag = models.IntegerField(choices=RecordUsedFlag, default=0)
 
 

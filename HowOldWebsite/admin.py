@@ -43,9 +43,9 @@ admin.site.register(RecordFace, RecordFaceAdmin)
 
 
 class RecordSexAdmin(admin.ModelAdmin):
-    fields = ['sex_user', 'used_flag']
+    fields = ['value_user', 'used_flag']
     list_filter = ['used_flag']
-    list_display = ('img_show', 'sex_predict', 'sex_user', 'used_flag')
+    list_display = ('img_show', 'value_predict', 'value_user', 'used_flag')
     actions = None
 
     def img_show(self, obj):
@@ -59,9 +59,9 @@ admin.site.register(RecordSex, RecordSexAdmin)
 
 
 class RecordAgeAdmin(admin.ModelAdmin):
-    fields = ['age_user', 'used_flag']
+    fields = ['value_user', 'used_flag']
     list_filter = ['used_flag']
-    list_display = ('img_show', 'age_predict', 'user_report', 'used_flag')
+    list_display = ('img_show', 'value_predict', 'value_user', 'used_flag')
     actions = None
 
     def user_report(self, obj):
@@ -69,7 +69,7 @@ class RecordAgeAdmin(admin.ModelAdmin):
             return ""
         return str(obj.age_user)
 
-    user_report.admin_order_field = 'age_user'
+    user_report.admin_order_field = 'value_user'
 
     def img_show(self, obj):
         s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'
@@ -82,9 +82,9 @@ admin.site.register(RecordAge, RecordAgeAdmin)
 
 
 class RecordSmileAdmin(admin.ModelAdmin):
-    fields = ['smile_user', 'used_flag']
+    fields = ['value_user', 'used_flag']
     list_filter = ['used_flag']
-    list_display = ('img_show', 'smile_predict', 'user_report', 'used_flag')
+    list_display = ('img_show', 'value_predict', 'value_user', 'used_flag')
     actions = None
 
     def user_report(self, obj):
@@ -92,7 +92,7 @@ class RecordSmileAdmin(admin.ModelAdmin):
             return ""
         return str(obj.smile_user)
 
-    user_report.admin_order_field = 'smile_user'
+    user_report.admin_order_field = 'value_user'
 
     def img_show(self, obj):
         s = u'<img src="{}face/{}.jpg" style="width:2em;height:2em">'

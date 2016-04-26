@@ -44,9 +44,9 @@ def review_data(request):
         how_old_age = how_old_face.recordage_set.first()
         how_old_smile = how_old_face.recordsmile_set.first()
         result['id'] = str(how_old_face.id)
-        result['sex'] = how_old_sex.sex_predict
-        result['age'] = how_old_age.age_predict
-        result['smile'] = how_old_smile.smile_predict
+        result['sex'] = how_old_sex.value_predict
+        result['age'] = how_old_age.value_predict
+        result['smile'] = how_old_smile.value_predict
     except Exception as e:
         # print(e)
         success = False
@@ -144,9 +144,9 @@ def feedback(request):
 
         # Update into the database
         database_face = RecordFace.objects.get(id=face_id)
-        database_face.recordsex_set.update(sex_user=sex_user)
-        database_face.recordage_set.update(age_user=age_user)
-        database_face.recordsmile_set.update(smile_user=smile_user)
+        database_face.recordsex_set.update(value_user=sex_user)
+        database_face.recordage_set.update(value_user=age_user)
+        database_face.recordsmile_set.update(value_user=smile_user)
         database_face.used_flag = 1
         database_face.save()
     except Exception as e:

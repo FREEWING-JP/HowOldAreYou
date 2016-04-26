@@ -40,6 +40,6 @@ def __do_save_sex_to_database_all(database_face, sex):
 
 def __do_save_sex_to_database(face_record, sex_predict):
     database_record_sex = RecordSex(original_face=face_record,
-                                    sex_predict=sex_predict)
+                                    value_predict=sex_predict)
     database_record_sex.save()
     return database_record_sex

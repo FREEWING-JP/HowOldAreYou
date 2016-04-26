@@ -25,9 +25,9 @@ def result_arrange(raw_image,
         t_face['right'] = arr_face[itr].location_right
         t_face['top'] = arr_face[itr].location_top
         t_face['bottom'] = arr_face[itr].location_bottom
-        t_face = __do_set_value(var=t_face, key='sex', subkey='value', value=int(arr_sex[itr].sex_predict))
-        t_face = __do_set_value(var=t_face, key='age', subkey='value', value=float(arr_age[itr].age_predict))
-        t_face = __do_set_value(var=t_face, key='smile', subkey='value', value=float(arr_smile[itr].smile_predict))
+        t_face = __do_set_value(var=t_face, key='sex', subkey='value', value=int(arr_sex[itr].value_predict))
+        t_face = __do_set_value(var=t_face, key='age', subkey='value', value=float(arr_age[itr].value_predict))
+        t_face = __do_set_value(var=t_face, key='smile', subkey='value', value=float(arr_smile[itr].value_predict))
 
         result['faces'].append(t_face)
 

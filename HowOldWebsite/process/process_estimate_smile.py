@@ -40,6 +40,6 @@ def __do_save_smile_to_database_all(database_face, smile):
 
 def __do_save_smile_to_database(face_record, smile_predict):
     database_record_smile = RecordSmile(original_face=face_record,
-                                        smile_predict=smile_predict)
+                                        value_predict=smile_predict)
     database_record_smile.save()
     return database_record_smile

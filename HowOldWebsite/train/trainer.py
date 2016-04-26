@@ -87,9 +87,9 @@ class Trainer:
 
                 # Get targets
                 t = {}
-                t['sex'] = (face.recordsex_set.first()).sex_user
-                t['age'] = (face.recordage_set.first()).age_user
-                t['smile'] = (face.recordsmile_set.first()).smile_user
+                t['sex'] = (face.recordsex_set.first()).value_user
+                t['age'] = (face.recordage_set.first()).value_user
+                t['smile'] = (face.recordsmile_set.first()).value_user
                 for m in model_names:
                     targets[m].append(t[m])
                     # targets['sex'].append(t_sex)
