@@ -16,7 +16,7 @@ __author__ = 'Hao Yu'
 
 class TrainerSmile(BaseTrainer):
     def __init__(self):
-        BaseTrainer.__init__(self)
+        super(TrainerSmile, self).__init__()
         self.model_name = 'smile'
         self.model_id = uuid.uuid4()
         self.model_path = os.path.join(django.conf.settings.SAVE_DIR['MODEL'],

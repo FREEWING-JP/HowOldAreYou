@@ -16,7 +16,7 @@ __author__ = 'Hao Yu'
 
 class TrainerSex(BaseTrainer):
     def __init__(self):
-        BaseTrainer.__init__(self)
+        super(TrainerSex, self).__init__()
         self.model_name = 'sex'
         self.model_id = uuid.uuid4()
         self.model_path = os.path.join(django.conf.settings.SAVE_DIR['MODEL'],
@@ -28,7 +28,8 @@ class TrainerSex(BaseTrainer):
         self.model = copy.deepcopy(get_predictor(self.model_name.upper()))
 
     def do_save_to_database(self, accuracy):
-        model = ModelSex(id=self.model_id, accuracy=accuracy)
+        model = ModelSex(id=self.model_id,
+                         accuracy=accuracy)
         os.mkdir(self.model_path)
         joblib.dump(self.model, self.model_file_path)
 
