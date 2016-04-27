@@ -47,17 +47,17 @@ class Command(BaseCommand):
                 cv_face_image = do_imread(image_path)
                 # face_gray = do_rgb2gray(cv_face_image)
 
-                image_info = {}
+                image_info = dict()
                 feature = feature_extract_all(cv_face_image)
                 image_info["feature"] = feature
-
-                if 'Male' == item[3]:
-                    image_info["sex"] = 1
+                image_info["target"] = dict()
+                if 'male' == item[3].lower():
+                    image_info["target"]["sex"] = [1]
                 else:
-                    image_info["sex"] = 0
-                image_info["age"] = int(item[1])
-                image_info["age_lambda"] = float(item[2])
-                image_info["smile"] = float(item[5])
+                    image_info["target"]["sex"] = [0]
+                image_info["target"]["age"] = [int(item[1])]
+                image_info["target"]["age_lambda"] = [float(item[2])]
+                image_info["target"]["smile"] = [float(item[5])]
 
                 # Save to disk
                 # scipy.io.savemat(image_feature_path, image_info)
