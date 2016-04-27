@@ -8,7 +8,7 @@ import dlib
 import skimage.io
 import skimage.transform
 
-from HowOldWebsite.features.util_feature import FeatureUtil
+from HowOldWebsite.features.util_feature import UtilFeature
 from HowOldWebsite.models import RecordFace
 from HowOldWebsite.utils.image import do_rgb2gray
 
@@ -102,7 +102,7 @@ def __do_feature_extract(image_faces):
     features = {}
     try:
         for fe in ['lbp', 'hog', 'lbp_hog', 'landmark', 'rbm']:
-            features[fe] = FeatureUtil.extract_all(fe, image_faces)
+            features[fe] = UtilFeature.extract_all(fe, image_faces)
     except Exception as e:
         # print(e)
         pass

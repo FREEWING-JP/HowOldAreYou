@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 
-from HowOldWebsite.trainers.trainer import Trainer
+from HowOldWebsite.trainers.util_trainer import UtilTrainer
 
 __author__ = 'Hao Yu'
 
@@ -26,6 +26,6 @@ class Command(BaseCommand):
             print(m, end=" ")
         print()
 
-        success = Trainer.train(train_models)
+        success = UtilTrainer.train(train_models)
 
         # print("=" * 10 + " Train model success " + '=' * 10)

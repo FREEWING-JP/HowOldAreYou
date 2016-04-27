@@ -3,7 +3,7 @@
 from HowOldWebsite.utils.language import reflect_get_class
 
 
-class FeatureUtil:
+class UtilFeature:
     @classmethod
     def __make_class_name(cls, feature_name):
         feature_name_split = feature_name.split('_')

@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from HowOldWebsite.process.process_estimate_smile import smile_estimate
-from HowOldWebsite.trainers.trainer import Trainer
+from HowOldWebsite.trainers.util_trainer import UtilTrainer
 from HowOldWebsite.utils.api import do_message_maker
 from .models import RecordFace
 from .models import RecordOriginalImage
@@ -160,6 +160,6 @@ def train(request):
             if request.GET.get(mod, '') in [True, "true", 1]:
                 train_models.append(mod)
 
-    success = Trainer.train(train_models)
+    success = UtilTrainer.train(train_models)
     return HttpResponse(
         do_message_maker(success=success))

@@ -17,24 +17,24 @@ from .trainer_smile import TrainerSmile
 __author__ = 'Hao Yu'
 
 
-class Trainer:
+class UtilTrainer:
     __busy = False
 
     # __threads = []
 
     @classmethod
     def is_busy(cls):
-        return Trainer.__busy
+        return UtilTrainer.__busy
 
     @classmethod
     def train(cls, request):
-        if Trainer.is_busy():
+        if UtilTrainer.is_busy():
             return False
 
-        Trainer.__busy = True
+        UtilTrainer.__busy = True
 
         # Is it OK?
-        th = threading.Thread(target=Trainer.__train_main, args=(request,))
+        th = threading.Thread(target=UtilTrainer.__train_main, args=(request,))
         th.start()
 
         return True
@@ -64,9 +64,9 @@ class Trainer:
                 threads[m] = None
 
             trainers = {
-                'sex': Trainer.__do_thread_train_sex,
-                'age': Trainer.__do_thread_train_age,
-                'smile': Trainer.__do_thread_train_smile,
+                'sex': UtilTrainer.__do_thread_train_sex,
+                'age': UtilTrainer.__do_thread_train_age,
+                'smile': UtilTrainer.__do_thread_train_smile,
             }
 
             # Extract feature
@@ -122,7 +122,7 @@ class Trainer:
         print("=" * 10 + " Train Finish " + "=" * 10)
 
         # Set the busy flag
-        Trainer.__busy = False
+        UtilTrainer.__busy = False
 
     @classmethod
     def __do_thread_train_sex(cls, n_faces, features, target):

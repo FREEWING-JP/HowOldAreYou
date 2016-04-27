@@ -9,7 +9,7 @@ import django.conf
 import numpy as np
 from sklearn.externals import joblib
 
-from HowOldWebsite.features.util_feature import FeatureUtil
+from HowOldWebsite.features.util_feature import UtilFeature
 
 __author__ = 'Hao Yu'
 
@@ -41,7 +41,7 @@ class BaseEstimator:
     def feature_extract(cls, feature_jar, pic_jar):
         for key in cls.features_name:
             if key not in feature_jar.keys():
-                features = FeatureUtil.extract_all(key, pic_jar)
+                features = UtilFeature.extract_all(key, pic_jar)
                 feature_jar[key] = features
         return feature_jar
 
