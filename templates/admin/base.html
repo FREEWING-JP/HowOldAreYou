@@ -108,9 +108,24 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Sex</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Age</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Record Smile</a></li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_recordsex_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Record Sex
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_recordage_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Record Age
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_recordsmile_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Record Smile
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -120,9 +135,24 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Sex</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Age</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Model Smile</a></li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_modelsex_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Model Sex
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_modelage_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Model Age
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:HowOldWebsite_modelsmile_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Model Smile
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -249,7 +279,7 @@
             <a href="http://haoyu.love">Hao Yu</a>.
         </strong>
         All rights reserved.
-   
+
     </footer>
 </div><!-- ./wrapper -->
 
