@@ -324,7 +324,7 @@
             $('#do_train_model_button').on('click', function () {
                 $.ajax({
                     type: 'GET',
-                    url: "{% url 'train' %}",
+                    url: "{% url 'HowOldWebsite:train' %}",
                     data: {
                         "sex": true,
                         "age": true,

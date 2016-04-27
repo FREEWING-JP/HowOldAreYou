@@ -8,8 +8,8 @@
 {% block header_js %}
     <script type="text/javascript">
         var $CONFIG = {};
-        $CONFIG['fisher'] = '{% url 'fisher' %}';
-        $CONFIG['feedback'] = '{% url 'feedback' %}';
+        $CONFIG['fisher'] = '{% url 'HowOldWebsite:fisher' %}';
+        $CONFIG['feedback'] = '{% url 'HowOldWebsite:feedback' %}';
         $CONFIG['photo'] = '{{ MEDIA_URL }}original_image/';
         $CONFIG['image_sex_male'] = '{% static 'img/icon-gender-male.png' %}';
         $CONFIG['image_sex_female'] = '{% static 'img/icon-gender-female.png' %}';

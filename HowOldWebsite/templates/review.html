@@ -4,8 +4,8 @@
 {% block header_js %}
     <script type="text/javascript">
         var $CONFIG = {};
-        $CONFIG['review_data'] = '{% url 'review_data' %}';
-        $CONFIG['feedback'] = '{% url 'feedback' %}';
+        $CONFIG['review_data'] = '{% url 'HowOldWebsite:review_data' %}';
+        $CONFIG['feedback'] = '{% url 'HowOldWebsite:feedback' %}';
         $CONFIG['face'] = '{{ MEDIA_URL }}face/';
     </script>
 {% endblock %}
