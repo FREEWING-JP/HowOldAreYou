@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 
-from HowOldWebsite.train.trainer import Trainer
+from HowOldWebsite.trainers.trainer import Trainer
 
 __author__ = 'Hao Yu'
 

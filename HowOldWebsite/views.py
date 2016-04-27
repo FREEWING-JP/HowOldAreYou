@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from HowOldWebsite.process.process_estimate_smile import smile_estimate
-from HowOldWebsite.train.trainer import Trainer
+from HowOldWebsite.trainers.trainer import Trainer
 from HowOldWebsite.utils.api import do_message_maker
 from .models import RecordFace
 from .models import RecordOriginalImage

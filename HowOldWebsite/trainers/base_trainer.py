@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from HowOldWebsite.benchmark.benchmarker import Benchmarker
+from HowOldWebsite.benchmarkers.base_benchmarker import BaseBenchmarker
 from HowOldWebsite.kernel.feature import named_feature_combine
 
 __author__ = 'Hao Yu'
@@ -38,7 +38,7 @@ class BaseTrainer:
         self.model.set_params(verbose=0)
 
     def do_run_benchmark(self):
-        bm = Benchmarker()
+        bm = BaseBenchmarker()
         score = bm.get_benchmark(model=self.model, model_name=self.model_name)
         return score
 
