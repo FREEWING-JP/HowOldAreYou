@@ -153,7 +153,7 @@ class BaseEstimator:
             datase_object = cls.database_relation.objects.filter(id=model_uuid_id)
             assert datase_object is not None
 
-            assert datase_object.used_flag == 0
+            # assert datase_object.used_flag == 0
 
             # Delete it!
             datase_object.delete()
