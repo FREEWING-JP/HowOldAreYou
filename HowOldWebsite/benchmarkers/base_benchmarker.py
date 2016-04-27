@@ -29,11 +29,7 @@ class BaseBenchmarker:
         # Data file path
         data_file_path = django.conf.settings.SAVE_DIR['STD_FACE_MAT']
 
-        debug_counter = 0
         for item in cls.data_description:
-            debug_counter += 1
-            if debug_counter >= 10:
-                break
             try:
                 pic_name = item[0]
                 single_data_file = os.path.join(data_file_path, pic_name + '.pkl')
