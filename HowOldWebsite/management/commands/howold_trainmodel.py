@@ -17,7 +17,7 @@ class Command(BaseCommand):
         train_models = []
         model_names = ['sex', 'age', 'smile']
         for m in options['models']:
-            if m in model_names:
+            if m.lower() in model_names:
                 train_models.append(m)
 
         print("=" * 10 + " We are training model(s) {}" + '=' * 10)
