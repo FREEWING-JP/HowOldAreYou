@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import json
+import random
 import uuid
 
 from django.http import HttpResponse
@@ -36,10 +37,16 @@ def review(request):
 
 
 def review_data(request):
-    how_old_face = RecordFace.objects.filter(used_flag=0).first()
     result = {}
     success = True
     try:
+        # Query and cache the result
+        how_old_face_set = [f for f in RecordFace.objects.filter(used_flag=0)[:10]]
+
+        face_count = len(how_old_face_set)
+        ith = random.randint(0, max(face_count - 1, 0))
+        how_old_face = how_old_face_set[ith]
+
         how_old_sex = how_old_face.recordsex_set.first()
         how_old_age = how_old_face.recordage_set.first()
         how_old_smile = how_old_face.recordsmile_set.first()
@@ -50,6 +57,7 @@ def review_data(request):
     except Exception as e:
         # print(e)
         success = False
+        result = None
         pass
 
     return HttpResponse(
