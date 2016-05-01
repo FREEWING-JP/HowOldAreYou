@@ -8,6 +8,7 @@ from urllib import request as urllib_request
 import django.conf
 import skimage.exposure
 import skimage.io
+from PIL import Image
 
 from HowOldWebsite.models import RecordOriginalImage
 
@@ -44,6 +45,9 @@ def __do_fetch_image_by_uploading(file, request, pic_id, upload_filename):
             for chunk in image_file.chunks():
                 destination.write(chunk)
 
+        cv_image = Image.open(upload_filename)
+        cv_image.save(upload_filename, 'JPEG')
+
         cv_image = skimage.io.imread(upload_filename)
         cv_image = __do_image_process(cv_image)
         size_scale = os.path.getsize(upload_filename)
@@ -66,6 +70,9 @@ def __do_fetch_image_by_url(url, request, pic_id, upload_filename):
         file_content = webfile.read()
         with open(upload_filename, 'wb+') as destination:
             destination.write(file_content)
+
+        cv_image = Image.open(upload_filename)
+        cv_image.save(upload_filename, 'JPEG')
 
         cv_image = skimage.io.imread(upload_filename)
         cv_image = __do_image_process(cv_image)
