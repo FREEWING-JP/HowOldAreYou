@@ -2,8 +2,10 @@
 
 import json
 import random
+import time
 import uuid
 
+import django.conf
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -67,6 +69,7 @@ def review_data(request):
 
 def fisher(request):
     result = {}
+    time_start = time.clock()
 
     # check if in POST method
     if not request.method == "POST":
@@ -91,6 +94,8 @@ def fisher(request):
         return HttpResponse(
             do_message_maker(success=False,
                              message='Face Detect Failed'))
+
+    time_detect = time.clock()
 
     # print('Predict Sex ...')
     result_sex_estimate, result['sex'] = \
@@ -118,6 +123,14 @@ def fisher(request):
 
     # print('Done!')
     final_result = result_arrange(result)
+
+    time_process = time.clock()
+    if django.conf.settings.DEBUG:
+        print('Face detected: {}'.format(final_result['n_faces']))
+        print('Detect time: {}s'.format(time_detect - time_start))
+        print('Process time: {}s'.format(time_process - time_detect))
+        print('Total time: {}s'.format(time_process - time_start))
+
     # print(final_result)
     return HttpResponse(
         do_message_maker(success=True,
