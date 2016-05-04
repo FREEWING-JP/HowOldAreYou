@@ -35,3 +35,8 @@ html {
     display: inline-block;
     position: relative;
 }
+
+#how_old_drop_zone,
+#how_old_url > .input-group {
+    box-shadow: 5px 5px 10px #ccc;
+}
