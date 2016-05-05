@@ -3,7 +3,11 @@
 # import cv2
 import os
 import uuid
-from urllib import request as urllib_request
+
+try:
+    from urllib import request as urllib_request
+except:
+    import urllib2 as urllib_request
 
 import django.conf
 import skimage.exposure
