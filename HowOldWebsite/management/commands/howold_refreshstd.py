@@ -7,8 +7,9 @@ import django.conf
 from django.core.management.base import BaseCommand
 from sklearn.externals import joblib
 
-from HowOldWebsite.kernel.feature import feature_extract_all
+from HowOldWebsite.features.util_feature import UtilFeature
 from HowOldWebsite.utils.image import do_imread
+from HowOldWebsite.utils.image import do_rgb2gray
 
 __author__ = 'Hao Yu'
 
@@ -45,10 +46,21 @@ class Command(BaseCommand):
 
                 # Go
                 cv_face_image = do_imread(image_path)
-                # face_gray = do_rgb2gray(cv_face_image)
+                cv_face_image_gray = do_rgb2gray(cv_face_image)
+
+                face_jar = {
+                    'rgb': [],
+                    'gray': [],
+                }
+
+                face_jar['rgb'].append(cv_face_image)
+                face_jar['gray'].append(cv_face_image_gray)
+
+                feature = dict()
+                for fe in ['lbp', 'hog', 'lbp_hog', 'landmark', 'rbm']:
+                    feature[fe] = UtilFeature.extract_all(fe, face_jar)
 
                 image_info = dict()
-                feature = feature_extract_all(cv_face_image)
                 image_info["feature"] = feature
                 image_info["target"] = dict()
                 if 'male' == item[3].lower():
